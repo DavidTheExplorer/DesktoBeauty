@@ -14,7 +14,7 @@ import dte.desktobeauty.jna.DesktopPicture;
 
 public class DesktoBeauty
 {
-	public static void main(String[] args) 
+	public static void main(String[] args) throws Exception
 	{
 		List<File> backgroundPictures = parseBackgroundPictures(args[0]);
 		ElementSelector<File> pictureSelector = parseElementSelector(args[1]);
@@ -24,15 +24,7 @@ public class DesktoBeauty
 			File picture = pictureSelector.selectFrom(backgroundPictures);
 			DesktopPicture.set(picture);
 			
-			//sleep for 1 second
-			try
-			{
-				TimeUnit.SECONDS.sleep(1);
-			}
-			catch(InterruptedException exception)
-			{
-				exception.printStackTrace();
-			}
+			TimeUnit.SECONDS.sleep(1);
 		}
 	}
 
