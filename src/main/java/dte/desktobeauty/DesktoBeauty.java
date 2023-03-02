@@ -1,16 +1,15 @@
 package dte.desktobeauty;
 
 import java.io.File;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import dte.desktobeauty.desktop.DesktopPicture;
 import dte.desktobeauty.elementselector.ElementSelector;
 import dte.desktobeauty.elementselector.RandomElementSelector;
 import dte.desktobeauty.elementselector.RandomOrderSelector;
-import dte.desktobeauty.jna.DesktopPicture;
 
 public class DesktoBeauty
 {

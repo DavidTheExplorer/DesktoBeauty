@@ -1,4 +1,4 @@
-package dte.desktobeauty.jna;
+package dte.desktobeauty.desktop;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import dte.desktobeauty.utils.JavaUtils;
+import dte.desktobeauty.utils.User32;
 
 public class DesktopPicture 
 {
