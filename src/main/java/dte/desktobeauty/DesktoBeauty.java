@@ -5,12 +5,12 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import dte.desktobeauty.elementselector.ElementSelector;
 import dte.desktobeauty.elementselector.RandomElementSelector;
 import dte.desktobeauty.elementselector.RandomOrderSelector;
 import dte.desktobeauty.jna.DesktopPicture;
-import dte.desktobeauty.utils.JavaUtils;
 
 public class DesktoBeauty
 {
@@ -27,7 +27,7 @@ public class DesktoBeauty
 			//sleep for 1 second
 			try
 			{
-				JavaUtils.sleep(Duration.ofSeconds(1));
+				TimeUnit.SECONDS.sleep(1);
 			}
 			catch(InterruptedException exception)
 			{

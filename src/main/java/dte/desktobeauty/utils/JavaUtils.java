@@ -1,17 +1,11 @@
 package dte.desktobeauty.utils;
 
 import java.nio.file.Path;
-import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
 
 public class JavaUtils
 {
-	public static void sleep(Duration duration) throws InterruptedException 
-	{
-		Thread.sleep(duration.toMillis());
-	}
-	
 	public static String getExtension(Path path)
 	{
 		String pathString = path.toString();
