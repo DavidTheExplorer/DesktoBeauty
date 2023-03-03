@@ -31,7 +31,10 @@ public class DesktoBeauty
 
 		while(true) 
 		{
-			//select the new desktop background
+			//wait before setting a new background picture
+			Thread.sleep(changeDelay.toMillis());
+			
+			//select a picture
 			Path selectedPicture = pictureSelector.selectFrom(backgroundPictures);
 			
 			//set it & print the result(success or failure)
@@ -46,9 +49,6 @@ public class DesktoBeauty
 			{
 				LOGGER.error("Failed to set the background to \"{}\" because it has an unsupported extension: '{}'", pictureName, exception.getExtension());
 			}
-			
-			//wait before setting another one
-			Thread.sleep(changeDelay.toMillis());
 		}
 	}
 
