@@ -2,9 +2,9 @@ package dte.desktobeauty;
 
 import static java.util.stream.Collectors.toList;
 
-import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -40,27 +40,25 @@ public class DesktoBeauty
 		return ElementSelector.fromName(args[0]);
 	}
 
-	private static List<Path> parseBackgroundPictures(String path)
+	private static List<Path> parseBackgroundPictures(String folderPath) throws IOException
 	{
-		File backgroundsFolder = new File(path);
+		Path path = Path.of(folderPath);
 
-		if(!backgroundsFolder.exists())
+		if(!Files.isDirectory(path))
 		{
 			LOGGER.error("Cannot find the specified backgrounds folder: '{}'", path);
 			System.exit(0);
 		}
 
-		File[] pictures = backgroundsFolder.listFiles();
+		List<Path> backgrounds = Files.list(path).collect(toList());
 
-		if(pictures.length == 0)
+		if(backgrounds.isEmpty())
 		{
 			LOGGER.error("The backgrounds folder is empty - You have to insert at least one!");
 			LOGGER.error("Closing...");
 			System.exit(1);
 		}
 		
-		return Arrays.stream(pictures)
-				.map(File::toPath)
-				.collect(toList());
+		return backgrounds;
 	}
 }
