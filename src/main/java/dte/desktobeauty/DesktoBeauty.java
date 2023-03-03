@@ -24,7 +24,7 @@ public class DesktoBeauty
 	{
 		Duration changeDelay = Duration.ofMinutes(Integer.valueOf(args[0]));
 		ElementSelector<Path> pictureSelector = ElementSelector.fromName(args[1]);
-		List<Path> backgroundPictures = parseBackgroundPictures(args[2]);
+		List<Path> backgroundPictures = loadBackgroundPictures();
 		
 		LOGGER.info("Starting to change your Desktop's background every {} minutes!", changeDelay.toMinutes());
 		logSetting("Using Picture Selector: '{}'", pictureSelector.getName());
@@ -58,22 +58,23 @@ public class DesktoBeauty
 		LOGGER.info("» " + message, parameters);
 	}
 
-	private static List<Path> parseBackgroundPictures(String folderPath) throws IOException
+	private static List<Path> loadBackgroundPictures() throws IOException
 	{
-		Path path = Path.of(folderPath);
+		Path backgroundsFolder = Path.of(System.getProperty("user.home"), "DesktoBeauty", "Desktop Backgrounds");
 
-		if(!Files.isDirectory(path))
+		if(Files.notExists(backgroundsFolder))
 		{
-			LOGGER.error("Cannot find the specified backgrounds folder: '{}'", path);
-			System.exit(1);
+			LOGGER.info("Please wait while creating the Backgrounds Folder at \"{}\"...", backgroundsFolder.toString());
+			Files.createDirectories(backgroundsFolder);
+			LOGGER.info("Done!");
+			System.exit(0);
 		}
 
-		List<Path> backgrounds = Files.list(path).collect(toList());
+		List<Path> backgrounds = Files.list(backgroundsFolder).collect(toList());
 
 		if(backgrounds.isEmpty())
 		{
-			LOGGER.error("The backgrounds folder is empty - You have to insert at least one!");
-			LOGGER.error("Closing...");
+			LOGGER.error("The Backgrounds Folder is empty - You have to insert at least one background!");
 			System.exit(1);
 		}
 		
