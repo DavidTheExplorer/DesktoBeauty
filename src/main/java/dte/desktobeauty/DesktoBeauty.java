@@ -8,12 +8,17 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import dte.desktobeauty.desktop.DesktopPicture;
 import dte.desktobeauty.elementselector.ElementSelector;
 import dte.desktobeauty.elementselector.RandomElementSelector;
 
 public class DesktoBeauty
 {
+	private static final Logger LOGGER = LogManager.getLogger(DesktoBeauty.class);
+	
 	public static void main(String[] args) throws Exception
 	{
 		List<Path> backgroundPictures = parseBackgroundPictures(args[0]);
@@ -41,7 +46,7 @@ public class DesktoBeauty
 
 		if(!backgroundsFolder.exists())
 		{
-			System.err.println(String.format("Cannot find the specified directory: %s", path));
+			LOGGER.error("Cannot find the specified backgrounds folder: '{}'", path);
 			System.exit(0);
 		}
 
@@ -49,8 +54,8 @@ public class DesktoBeauty
 
 		if(pictures.length == 0)
 		{
-			System.err.println("The backgrounds folder is empty!");
-			System.err.println("Closing...");
+			LOGGER.error("The backgrounds folder is empty - You have to insert at least one!");
+			LOGGER.error("Closing...");
 			System.exit(1);
 		}
 		
