@@ -5,15 +5,14 @@ import static java.util.stream.Collectors.toList;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Duration;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import dte.desktobeauty.desktop.DesktopPicture;
 import dte.desktobeauty.elementselector.ElementSelector;
-import dte.desktobeauty.elementselector.RandomElementSelector;
 import dte.desktobeauty.exceptions.UnsupportedExtensionException;
 import dte.desktobeauty.utils.FileUtils;
 
@@ -23,8 +22,12 @@ public class DesktoBeauty
 	
 	public static void main(String[] args) throws Exception
 	{
-		List<Path> backgroundPictures = parseBackgroundPictures(args[0]);
-		ElementSelector<Path> pictureSelector = parsePictureSelector(args);
+		Duration changeDelay = Duration.ofMinutes(Integer.valueOf(args[0]));
+		ElementSelector<Path> pictureSelector = ElementSelector.fromName(args[1]);
+		List<Path> backgroundPictures = parseBackgroundPictures(args[2]);
+		
+		LOGGER.info("Starting to change your Desktop's background every {} minutes!", changeDelay.toMinutes());
+		LOGGER.info("");
 
 		while(true) 
 		{
@@ -45,16 +48,8 @@ public class DesktoBeauty
 			}
 			
 			//wait before setting another one
-			TimeUnit.SECONDS.sleep(1);
+			Thread.sleep(changeDelay.toMillis());
 		}
-	}
-
-	private static ElementSelector<Path> parsePictureSelector(String[] args)
-	{
-		if(args.length == 0) 
-			return new RandomElementSelector<>();
-			
-		return ElementSelector.fromName(args[0]);
 	}
 
 	private static List<Path> parseBackgroundPictures(String folderPath) throws IOException
