@@ -9,14 +9,13 @@ import java.util.concurrent.TimeUnit;
 import dte.desktobeauty.desktop.DesktopPicture;
 import dte.desktobeauty.elementselector.ElementSelector;
 import dte.desktobeauty.elementselector.RandomElementSelector;
-import dte.desktobeauty.elementselector.RandomOrderSelector;
 
 public class DesktoBeauty
 {
 	public static void main(String[] args) throws Exception
 	{
 		List<File> backgroundPictures = parseBackgroundPictures(args[0]);
-		ElementSelector<File> pictureSelector = parseElementSelector(args[1]);
+		ElementSelector<File> pictureSelector = parseElementSelector(args);
 
 		while(true) 
 		{
@@ -27,19 +26,12 @@ public class DesktoBeauty
 		}
 	}
 
-	private static ElementSelector<File> parseElementSelector(String name)
+	private static ElementSelector<File> parseElementSelector(String[] args)
 	{
-		switch(name.toLowerCase()) 
-		{
-		case "random":
+		if(args.length == 0) 
 			return new RandomElementSelector<>();
 			
-		case "random-order":
-			return new RandomOrderSelector<>();
-			
-		default:
-			throw new IllegalArgumentException(String.format("Couldn't find a picture selector named '%s'!", name));
-		}
+		return ElementSelector.fromName(args[0]);
 	}
 
 	private static List<File> parseBackgroundPictures(String path)
