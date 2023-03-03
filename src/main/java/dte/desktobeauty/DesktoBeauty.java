@@ -14,6 +14,7 @@ import org.apache.logging.log4j.Logger;
 import dte.desktobeauty.desktop.DesktopPicture;
 import dte.desktobeauty.elementselector.ElementSelector;
 import dte.desktobeauty.elementselector.RandomElementSelector;
+import dte.desktobeauty.exceptions.UnsupportedExtensionException;
 import dte.desktobeauty.utils.FileUtils;
 
 public class DesktoBeauty
@@ -28,10 +29,17 @@ public class DesktoBeauty
 		while(true) 
 		{
 			Path selectedPicture = pictureSelector.selectFrom(backgroundPictures);
+			String fileName = FileUtils.getNameWithoutExtension(selectedPicture);
 			
-			LOGGER.info("Setting a new background: \"{}\"", FileUtils.getNameWithoutExtension(selectedPicture));
-			
-			DesktopPicture.set(selectedPicture);
+			try 
+			{
+				DesktopPicture.set(selectedPicture);
+				LOGGER.info("Setting a new background: \"{}\"", fileName);
+			}
+			catch(UnsupportedExtensionException exception) 
+			{
+				LOGGER.error("Failed to set the background to \"{}\" because it has an unsupported extension: '{}'", fileName, exception.getExtension());
+			}
 			
 			TimeUnit.SECONDS.sleep(1);
 		}

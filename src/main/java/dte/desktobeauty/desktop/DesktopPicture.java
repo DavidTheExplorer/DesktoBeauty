@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import dte.desktobeauty.exceptions.UnsupportedExtensionException;
 import dte.desktobeauty.utils.FileUtils;
 import dte.desktobeauty.utils.User32;
 
@@ -12,7 +13,7 @@ public class DesktopPicture
 {
 	private static final Set<String> ALLOWED_EXTENSIONS = new HashSet<>(Arrays.asList("png", "jpg", "jpeg"));
 
-	public static void set(Path picturePath) 
+	public static void set(Path picturePath) throws UnsupportedExtensionException
 	{
 		checkExtension(picturePath);
 		
@@ -24,6 +25,6 @@ public class DesktopPicture
 		String extension = FileUtils.getExtension(picturePath);
 		
 		if(!ALLOWED_EXTENSIONS.contains(extension))
-			throw new IllegalArgumentException(String.format("The provided picture's extension(%s) is not supported!", extension));
+			throw new UnsupportedExtensionException(extension);
 	}
 }
