@@ -41,8 +41,7 @@ public class DesktoBeauty
 
 		if(!backgroundsFolder.exists())
 		{
-			backgroundsFolder.mkdir();
-			System.out.println(String.format("The Backgrounds Folder was generated at: %s", backgroundsFolder.getPath()));
+			System.err.println(String.format("Cannot find the specified directory: %s", path));
 			System.exit(0);
 		}
 
@@ -50,7 +49,8 @@ public class DesktoBeauty
 
 		if(pictures.length == 0)
 		{
-			System.err.println("Background Folder is Empty - Closing.");
+			System.err.println("The backgrounds folder is empty!");
+			System.err.println("Closing...");
 			System.exit(1);
 		}
 		
