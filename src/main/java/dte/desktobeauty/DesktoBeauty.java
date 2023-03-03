@@ -23,7 +23,7 @@ public class DesktoBeauty
 	public static void main(String[] args) throws Exception
 	{
 		List<Path> backgroundPictures = parseBackgroundPictures(args[0]);
-		ElementSelector<Path> pictureSelector = parseElementSelector(args);
+		ElementSelector<Path> pictureSelector = parsePictureSelector(args);
 
 		while(true) 
 		{
@@ -37,7 +37,7 @@ public class DesktoBeauty
 		}
 	}
 
-	private static ElementSelector<Path> parseElementSelector(String[] args)
+	private static ElementSelector<Path> parsePictureSelector(String[] args)
 	{
 		if(args.length == 0) 
 			return new RandomElementSelector<>();
