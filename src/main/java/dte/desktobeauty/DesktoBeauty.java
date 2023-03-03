@@ -1,7 +1,9 @@
 package dte.desktobeauty;
 
+import static java.util.stream.Collectors.toList;
+
 import java.io.File;
-import java.util.ArrayList;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -14,19 +16,18 @@ public class DesktoBeauty
 {
 	public static void main(String[] args) throws Exception
 	{
-		List<File> backgroundPictures = parseBackgroundPictures(args[0]);
-		ElementSelector<File> pictureSelector = parseElementSelector(args);
+		List<Path> backgroundPictures = parseBackgroundPictures(args[0]);
+		ElementSelector<Path> pictureSelector = parseElementSelector(args);
 
 		while(true) 
 		{
-			File randomPicture = pictureSelector.selectFrom(backgroundPictures);
-			DesktopPicture.set(randomPicture.toPath());
+			DesktopPicture.set(pictureSelector.selectFrom(backgroundPictures));
 			
 			TimeUnit.SECONDS.sleep(1);
 		}
 	}
 
-	private static ElementSelector<File> parseElementSelector(String[] args)
+	private static ElementSelector<Path> parseElementSelector(String[] args)
 	{
 		if(args.length == 0) 
 			return new RandomElementSelector<>();
@@ -34,7 +35,7 @@ public class DesktoBeauty
 		return ElementSelector.fromName(args[0]);
 	}
 
-	private static List<File> parseBackgroundPictures(String path)
+	private static List<Path> parseBackgroundPictures(String path)
 	{
 		File backgroundsFolder = new File(path);
 
@@ -53,6 +54,8 @@ public class DesktoBeauty
 			System.exit(1);
 		}
 		
-		return new ArrayList<>(Arrays.asList(pictures));
+		return Arrays.stream(pictures)
+				.map(File::toPath)
+				.collect(toList());
 	}
 }
