@@ -1,5 +1,6 @@
 package dte.desktobeauty.elementselector;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -7,25 +8,19 @@ import java.util.List;
  *
  * @param <T> The type of the elements in the list.
  */
-@FunctionalInterface
 public interface ElementSelector<T>
 {
+	String getName();
 	T selectFrom(List<T> list);
 	
 	
 	
 	public static <T> ElementSelector<T> fromName(String selectorName)
 	{
-		switch(selectorName.toLowerCase()) 
-		{
-		case "random":
-			return new RandomElementSelector<>();
-			
-		case "random-order":
-			return new RandomOrderSelector<>();
-			
-		default:
-			throw new IllegalArgumentException(String.format("Couldn't find an element selector named '%s'!", selectorName));
-		}
+		return Arrays.asList(new RandomElementSelector<T>(), new RandomOrderSelector<T>())
+				.stream()
+				.filter(selector -> selector.getName().equalsIgnoreCase(selectorName))
+				.findFirst()
+				.orElseThrow(() -> new IllegalArgumentException(String.format("Couldn't find an element selector named '%s'!", selectorName)));
 	}
 }

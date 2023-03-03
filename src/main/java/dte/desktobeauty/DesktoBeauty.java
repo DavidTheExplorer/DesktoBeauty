@@ -27,6 +27,7 @@ public class DesktoBeauty
 		List<Path> backgroundPictures = parseBackgroundPictures(args[2]);
 		
 		LOGGER.info("Starting to change your Desktop's background every {} minutes!", changeDelay.toMinutes());
+		logSetting("Using Picture Selector: '{}'", pictureSelector.getName());
 		LOGGER.info("");
 
 		while(true) 
@@ -50,6 +51,11 @@ public class DesktoBeauty
 				LOGGER.error("Failed to set the background to \"{}\" because it has an unsupported extension: '{}'", pictureName, exception.getExtension());
 			}
 		}
+	}
+	
+	private static void logSetting(String message, Object... parameters)
+	{
+		LOGGER.info("» " + message, parameters);
 	}
 
 	private static List<Path> parseBackgroundPictures(String folderPath) throws IOException

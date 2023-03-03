@@ -8,8 +8,13 @@ import java.util.concurrent.ThreadLocalRandom;
  *
  * @param <T> The type of the elements in the list.
  */
-public class RandomElementSelector<T> implements ElementSelector<T>
+public class RandomElementSelector<T> extends AbstractElementSelector<T>
 {
+	public RandomElementSelector() 
+	{
+		super("Random");
+	}
+
 	@Override
 	public T selectFrom(List<T> list)
 	{

@@ -17,9 +17,14 @@ import java.util.stream.IntStream;
  *
  * @param <T> The type of the elements in the list.
  */
-public class RandomOrderSelector<T> implements ElementSelector<T>
+public class RandomOrderSelector<T> extends AbstractElementSelector<T>
 {
 	private final Map<List<T>, IndexSelector<T>> selectors = new HashMap<>();
+	
+	public RandomOrderSelector()
+	{
+		super("Random Order");
+	}
 	
 	@Override
 	public T selectFrom(List<T> list)
