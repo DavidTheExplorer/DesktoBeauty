@@ -52,7 +52,7 @@ public class DesktoBeauty
 		if(!Files.isDirectory(path))
 		{
 			LOGGER.error("Cannot find the specified backgrounds folder: '{}'", path);
-			System.exit(0);
+			System.exit(1);
 		}
 
 		List<Path> backgrounds = Files.list(path).collect(toList());
