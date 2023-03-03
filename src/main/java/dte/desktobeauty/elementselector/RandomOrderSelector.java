@@ -1,15 +1,14 @@
 package dte.desktobeauty.elementselector;
 
-import static java.util.stream.Collectors.collectingAndThen;
-import static java.util.stream.Collectors.toCollection;
+import static java.util.stream.Collectors.toList;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.stream.IntStream;
-
-import dte.desktobeauty.utils.StreamUtils;
 
 /**
  * Selects a random element from a list, but the selected elements cannot repeat until the entire list is consumed.
@@ -20,42 +19,38 @@ import dte.desktobeauty.utils.StreamUtils;
  */
 public class RandomOrderSelector<T> implements ElementSelector<T>
 {
-	private final Map<List<T>, ListData> listsData = new HashMap<>();
+	private final Map<List<T>, IndexSelector<T>> selectors = new HashMap<>();
 	
 	@Override
 	public T selectFrom(List<T> list)
 	{
-		return list.get(this.listsData.computeIfAbsent(list, ListData::new).nextIndex());
+		return this.selectors.computeIfAbsent(list, IndexSelector::new).next();
 	}
 	
-	private static class ListData
+	private static class IndexSelector<T>
 	{
-		private final int originalSize;
-		private LinkedList<Integer> indexesLeft = new LinkedList<>();
+		private final List<T> source;
+		private final Queue<Integer> indexesLeft = new LinkedList<>();
 		
-		public ListData(List<?> list) 
+		public IndexSelector(List<T> source) 
 		{
-			this.originalSize = list.size();
+			this.source = source;
 		}
 		
-		public boolean isEmpty() 
+		public T next() 
 		{
-			return this.indexesLeft.isEmpty();
+			if(this.indexesLeft.isEmpty())
+				regenerate();
+			
+			return this.source.get(this.indexesLeft.poll());
 		}
 		
 		public void regenerate() 
 		{
-			this.indexesLeft = IntStream.range(0, this.originalSize)
-					.boxed()
-					.collect(collectingAndThen(toCollection(LinkedList::new), StreamUtils::randomized));
-		}
-		
-		public int nextIndex() 
-		{
-			if(isEmpty())
-				regenerate();
+			List<Integer> randomIndexes = IntStream.range(0, this.source.size()).boxed().collect(toList());
+			Collections.shuffle(randomIndexes);
 			
-			return this.indexesLeft.pollFirst();
+			this.indexesLeft.addAll(randomIndexes);
 		}
 	}
 }
