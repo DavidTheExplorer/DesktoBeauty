@@ -14,6 +14,7 @@ import org.apache.logging.log4j.Logger;
 import dte.desktobeauty.desktop.DesktopPicture;
 import dte.desktobeauty.elementselector.ElementSelector;
 import dte.desktobeauty.elementselector.RandomElementSelector;
+import dte.desktobeauty.utils.FileUtils;
 
 public class DesktoBeauty
 {
@@ -26,7 +27,11 @@ public class DesktoBeauty
 
 		while(true) 
 		{
-			DesktopPicture.set(pictureSelector.selectFrom(backgroundPictures));
+			Path selectedPicture = pictureSelector.selectFrom(backgroundPictures);
+			
+			LOGGER.info("Setting a new background: \"{}\"", FileUtils.getNameWithoutExtension(selectedPicture));
+			
+			DesktopPicture.set(selectedPicture);
 			
 			TimeUnit.SECONDS.sleep(1);
 		}

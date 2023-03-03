@@ -10,4 +10,11 @@ public class FileUtils
 		
 		return pathString.substring(pathString.lastIndexOf('.')+1).toLowerCase();
 	}
+	
+	public static String getNameWithoutExtension(Path path) 
+	{
+		String fileName = path.getFileName().toString();
+		
+		return fileName.substring(0, fileName.indexOf(getExtension(path)) -1);
+	}
 }
