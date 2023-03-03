@@ -15,6 +15,6 @@ public class FileUtils
 	{
 		String fileName = path.getFileName().toString();
 		
-		return fileName.substring(0, fileName.indexOf(getExtension(path)) -1);
+		return fileName.substring(0, fileName.lastIndexOf(getExtension(path)) -1);
 	}
 }
