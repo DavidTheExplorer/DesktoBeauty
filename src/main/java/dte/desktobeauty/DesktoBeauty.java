@@ -44,7 +44,7 @@ public class DesktoBeauty
 			try 
 			{
 				DesktopPicture.set(selectedPicture);
-				LOGGER.info("Setting a new background: \"{}\"", pictureName);
+				LOGGER.info("New Background: \"{}\"", pictureName);
 			}
 			catch(UnsupportedExtensionException exception) 
 			{
