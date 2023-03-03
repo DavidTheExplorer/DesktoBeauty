@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.IntStream;
 
-import dte.desktobeauty.utils.JavaUtils;
+import dte.desktobeauty.utils.StreamUtils;
 
 public class RandomOrderSelector<T> implements ElementSelector<T>
 {
@@ -42,7 +42,7 @@ public class RandomOrderSelector<T> implements ElementSelector<T>
 		{
 			this.indexesLeft = IntStream.range(0, this.originalSize)
 					.boxed()
-					.collect(collectingAndThen(toCollection(LinkedList::new), JavaUtils::randomized));
+					.collect(collectingAndThen(toCollection(LinkedList::new), StreamUtils::randomized));
 		}
 		
 		public int nextIndex() 
