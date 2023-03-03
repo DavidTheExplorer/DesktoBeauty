@@ -28,7 +28,10 @@ public class DesktoBeauty
 
 		while(true) 
 		{
+			//select the new desktop background
 			Path selectedPicture = pictureSelector.selectFrom(backgroundPictures);
+			
+			//set it & print the result(success or failure)
 			String fileName = FileUtils.getNameWithoutExtension(selectedPicture);
 			
 			try 
@@ -41,6 +44,7 @@ public class DesktoBeauty
 				LOGGER.error("Failed to set the background to \"{}\" because it has an unsupported extension: '{}'", fileName, exception.getExtension());
 			}
 			
+			//wait before setting another one
 			TimeUnit.SECONDS.sleep(1);
 		}
 	}
