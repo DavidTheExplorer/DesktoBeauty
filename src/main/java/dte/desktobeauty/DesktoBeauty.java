@@ -1,7 +1,6 @@
 package dte.desktobeauty;
 
 import java.io.File;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -21,8 +20,8 @@ public class DesktoBeauty
 
 		while(true) 
 		{
-			Path picturePath = pictureSelector.selectFrom(backgroundPictures).toPath();
-			DesktopPicture.set(picturePath);
+			File randomPicture = pictureSelector.selectFrom(backgroundPictures);
+			DesktopPicture.set(randomPicture.toPath());
 			
 			TimeUnit.SECONDS.sleep(1);
 		}
@@ -34,8 +33,10 @@ public class DesktoBeauty
 		{
 		case "random":
 			return new RandomElementSelector<>();
+			
 		case "random-order":
 			return new RandomOrderSelector<>();
+			
 		default:
 			throw new IllegalArgumentException(String.format("Couldn't find a picture selector named '%s'!", name));
 		}
