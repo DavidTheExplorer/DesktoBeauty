@@ -32,16 +32,16 @@ public class DesktoBeauty
 			Path selectedPicture = pictureSelector.selectFrom(backgroundPictures);
 			
 			//set it & print the result(success or failure)
-			String fileName = FileUtils.getNameWithoutExtension(selectedPicture);
+			String pictureName = FileUtils.getNameWithoutExtension(selectedPicture);
 			
 			try 
 			{
 				DesktopPicture.set(selectedPicture);
-				LOGGER.info("Setting a new background: \"{}\"", fileName);
+				LOGGER.info("Setting a new background: \"{}\"", pictureName);
 			}
 			catch(UnsupportedExtensionException exception) 
 			{
-				LOGGER.error("Failed to set the background to \"{}\" because it has an unsupported extension: '{}'", fileName, exception.getExtension());
+				LOGGER.error("Failed to set the background to \"{}\" because it has an unsupported extension: '{}'", pictureName, exception.getExtension());
 			}
 			
 			//wait before setting another one
