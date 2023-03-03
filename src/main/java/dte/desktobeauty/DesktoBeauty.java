@@ -1,6 +1,7 @@
 package dte.desktobeauty;
 
 import java.io.File;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -20,8 +21,8 @@ public class DesktoBeauty
 
 		while(true) 
 		{
-			File picture = pictureSelector.selectFrom(backgroundPictures);
-			DesktopPicture.set(picture);
+			Path picturePath = pictureSelector.selectFrom(backgroundPictures).toPath();
+			DesktopPicture.set(picturePath);
 			
 			TimeUnit.SECONDS.sleep(1);
 		}

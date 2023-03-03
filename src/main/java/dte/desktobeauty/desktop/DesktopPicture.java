@@ -1,6 +1,5 @@
 package dte.desktobeauty.desktop;
 
-import java.io.File;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -13,13 +12,11 @@ public class DesktopPicture
 {
 	private static final Set<String> ALLOWED_EXTENSIONS = new HashSet<>(Arrays.asList("png", "jpg", "jpeg"));
 
-	public static void set(File picture) 
+	public static void set(Path picturePath) 
 	{
-		Path path = picture.toPath();
+		checkExtension(picturePath);
 		
-		checkExtension(path);
-		
-		User32.INSTANCE.SystemParametersInfo(0x0014, 0, path.toString(), 1);
+		User32.INSTANCE.SystemParametersInfo(0x0014, 0, picturePath.toString(), 1);
 	}
 
 	private static void checkExtension(Path picturePath) 
