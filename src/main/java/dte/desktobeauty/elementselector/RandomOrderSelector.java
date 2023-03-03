@@ -11,6 +11,13 @@ import java.util.stream.IntStream;
 
 import dte.desktobeauty.utils.StreamUtils;
 
+/**
+ * Selects a random element from a list, but the selected elements cannot repeat until the entire list is consumed.
+ * <p>
+ * Example of calls when applied on the list [1, 2, 3] -> <i>3, 1, 2, 1, 3, 2</i> So the number 3 cannot repeat until 2 and 1 are returned.
+ *
+ * @param <T> The type of the elements in the list.
+ */
 public class RandomOrderSelector<T> implements ElementSelector<T>
 {
 	private final Map<List<T>, ListData> listsData = new HashMap<>();
@@ -18,9 +25,7 @@ public class RandomOrderSelector<T> implements ElementSelector<T>
 	@Override
 	public T selectFrom(List<T> list)
 	{
-		int index = this.listsData.computeIfAbsent(list, ListData::new).nextIndex();
-		
-		return list.get(index);
+		return list.get(this.listsData.computeIfAbsent(list, ListData::new).nextIndex());
 	}
 	
 	private static class ListData

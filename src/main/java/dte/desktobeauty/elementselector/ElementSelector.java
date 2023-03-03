@@ -2,6 +2,11 @@ package dte.desktobeauty.elementselector;
 
 import java.util.List;
 
+/**
+ * This interface represents logic behind selecting an element from a {@link java.util.List}.
+ *
+ * @param <T> The type of the elements in the list.
+ */
 @FunctionalInterface
 public interface ElementSelector<T>
 {
