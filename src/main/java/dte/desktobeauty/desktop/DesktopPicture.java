@@ -15,16 +15,19 @@ public class DesktopPicture
 
 	public static void set(Path picturePath) throws UnsupportedExtensionException
 	{
-		checkExtension(picturePath);
+		if(!isSupportedExtension(picturePath))
+			throw new UnsupportedExtensionException(FileUtils.getExtension(picturePath));
 		
 		User32.INSTANCE.SystemParametersInfo(0x0014, 0, picturePath.toString(), 1);
 	}
 
-	private static void checkExtension(Path picturePath) 
+	public static boolean isSupportedExtension(Path picturePath) 
 	{
-		String extension = FileUtils.getExtension(picturePath);
-		
-		if(!ALLOWED_EXTENSIONS.contains(extension))
-			throw new UnsupportedExtensionException(extension);
+		return ALLOWED_EXTENSIONS.contains(FileUtils.getExtension(picturePath));
+	}
+	
+	public static Set<String> getAllowedExtensions()
+	{
+		return new HashSet<>(ALLOWED_EXTENSIONS);
 	}
 }

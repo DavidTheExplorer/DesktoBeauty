@@ -13,7 +13,6 @@ import org.apache.logging.log4j.Logger;
 
 import dte.desktobeauty.desktop.DesktopPicture;
 import dte.desktobeauty.elementselector.ElementSelector;
-import dte.desktobeauty.exceptions.UnsupportedExtensionException;
 import dte.desktobeauty.utils.FileUtils;
 
 public class DesktoBeauty
@@ -43,15 +42,14 @@ public class DesktoBeauty
 			//set it & print the result(success or failure)
 			String pictureName = FileUtils.getNameWithoutExtension(selectedPicture);
 			
-			try 
+			if(!DesktopPicture.isSupportedExtension(selectedPicture)) 
 			{
-				DesktopPicture.set(selectedPicture);
-				LOGGER.info("New Background: \"{}\"", pictureName);
+				LOGGER.error("Failed to set the background to \"{}\" due to an unsupported extension! The allowed ones are: {}.", pictureName, String.join(", ", DesktopPicture.getAllowedExtensions()));
+				continue;
 			}
-			catch(UnsupportedExtensionException exception) 
-			{
-				LOGGER.error("Failed to set the background to \"{}\" because it has an unsupported extension: '{}'", pictureName, exception.getExtension());
-			}
+			
+			DesktopPicture.set(selectedPicture);
+			LOGGER.info("New Background: \"{}\"", pictureName);
 		}
 	}
 
