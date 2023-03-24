@@ -3,7 +3,9 @@ CLI tool that takes control over your Desktop's Background Picture and changes i
 
 ## CLI Parameters
 The following parameters must be specified in-order:
-1. The amount of minutes to wait after changing the background.
+1. The amount of time to wait between the backgrounds-changing, surrounded by quotes.\
+Example: `"1 minute, 10 seconds"`
+
 2. The background selection algorithm:
     - **Random**: Selects a random picture.
     - **Random Order**: Selects a random picture, but a picture cannot repeat until all the rest were selected.\
