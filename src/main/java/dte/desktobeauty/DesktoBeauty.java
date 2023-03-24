@@ -14,6 +14,7 @@ import org.apache.logging.log4j.Logger;
 import dte.desktobeauty.desktop.DesktopPicture;
 import dte.desktobeauty.elementselector.ElementSelector;
 import dte.desktobeauty.utils.FileUtils;
+import dte.desktobeauty.utils.TimeUtils;
 
 public class DesktoBeauty
 {
@@ -21,11 +22,11 @@ public class DesktoBeauty
 	
 	public static void main(String[] args) throws Exception
 	{
-		Duration changeDelay = Duration.ofMinutes(Integer.valueOf(args[0]));
+		Duration changeDelay = TimeUtils.parseDuration(args[0]);
 		ElementSelector<Path> pictureSelector = ElementSelector.fromName(args[1]);
 		List<Path> backgroundPictures = loadBackgroundPictures();
 		
-		LOGGER.info("Starting to change your Desktop's background every {} minutes!", changeDelay.toMinutes());
+		LOGGER.info("Starting to change your Desktop's background every {}!", args[0]);
 		LOGGER.info("-~-Settings -~-");
 		LOGGER.info("» Backgrounds Amount: {}", backgroundPictures.size());
 		LOGGER.info("» Picture Selector: {}", pictureSelector.getName());
