@@ -1,56 +1,61 @@
 package dte.desktobeauty.elementselector;
 
-import static java.util.stream.Collectors.collectingAndThen;
-import static java.util.stream.Collectors.toCollection;
+import static java.util.stream.Collectors.toList;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.stream.IntStream;
 
-import dte.desktobeauty.utils.JavaUtils;
-
-public class RandomOrderSelector<T> implements ElementSelector<T>
+/**
+ * Selects a random element from a list, but the selected elements cannot repeat until the entire list is consumed.
+ * <p>
+ * Example of calls when applied on the list [1, 2, 3] -> <i>3, 1, 2, 1, 3, 2</i> So the number 3 cannot repeat until 2 and 1 are returned.
+ *
+ * @param <T> The type of the elements in the list.
+ */
+public class RandomOrderSelector<T> extends AbstractElementSelector<T>
 {
-	private final Map<List<T>, ListData> listsData = new HashMap<>();
+	private final Map<List<T>, IndexSelector<T>> selectors = new HashMap<>();
+	
+	public RandomOrderSelector()
+	{
+		super("Random Order");
+	}
 	
 	@Override
 	public T selectFrom(List<T> list)
 	{
-		int index = this.listsData.computeIfAbsent(list, ListData::new).nextIndex();
-		
-		return list.get(index);
+		return this.selectors.computeIfAbsent(list, IndexSelector::new).next();
 	}
 	
-	private static class ListData
+	private static class IndexSelector<T>
 	{
-		private final int originalSize;
-		private LinkedList<Integer> indexesLeft = new LinkedList<>();
+		private final List<T> source;
+		private final Queue<Integer> indexesLeft = new LinkedList<>();
 		
-		public ListData(List<?> list) 
+		public IndexSelector(List<T> source) 
 		{
-			this.originalSize = list.size();
+			this.source = source;
 		}
 		
-		public boolean isEmpty() 
+		public T next() 
 		{
-			return this.indexesLeft.isEmpty();
+			if(this.indexesLeft.isEmpty())
+				regenerate();
+			
+			return this.source.get(this.indexesLeft.poll());
 		}
 		
 		public void regenerate() 
 		{
-			this.indexesLeft = IntStream.range(0, this.originalSize)
-					.boxed()
-					.collect(collectingAndThen(toCollection(LinkedList::new), JavaUtils::randomized));
-		}
-		
-		public int nextIndex() 
-		{
-			if(isEmpty())
-				regenerate();
+			List<Integer> randomIndexes = IntStream.range(0, this.source.size()).boxed().collect(toList());
+			Collections.shuffle(randomIndexes);
 			
-			return this.indexesLeft.pollFirst();
+			this.indexesLeft.addAll(randomIndexes);
 		}
 	}
 }

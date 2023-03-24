@@ -1,4 +1,4 @@
-package dte.desktobeauty.jna;
+package dte.desktobeauty.utils;
 
 import com.sun.jna.Library;
 import com.sun.jna.Native;
