@@ -1,27 +1,41 @@
 package dte.desktobeauty;
 
+import static dte.desktobeauty.state.State.RUNNING;
+import static dte.desktobeauty.state.State.SETTING_SYSTEM_TRAY;
 import static java.util.stream.Collectors.toList;
 
+import java.awt.AWTException;
+import java.awt.Desktop;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.util.List;
 
+import javax.imageio.ImageIO;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import dte.desktobeauty.desktop.DesktopPicture;
 import dte.desktobeauty.elementselector.ElementSelector;
+import dte.desktobeauty.state.State;
 import dte.desktobeauty.utils.FileUtils;
+import dte.desktobeauty.utils.SystemTrayBuilder;
 import dte.desktobeauty.utils.TimeUtils;
 
 public class DesktoBeauty
 {
 	private static final Logger LOGGER = LogManager.getLogger(DesktoBeauty.class);
 	
+	private static final Path BACKGROUNDS_FOLDER_PATH = Path.of(System.getProperty("user.home"), "DesktoBeauty", "Desktop Backgrounds");
+
 	public static void main(String[] args) throws Exception
 	{
+		setGlobalExceptionLogger();
+		showSystemTray();
+		State.set(RUNNING);
+
 		Duration changeDelay = TimeUtils.parseDuration(args[0]);
 		ElementSelector<Path> pictureSelector = ElementSelector.fromName(args[1]);
 		List<Path> backgroundPictures = loadBackgroundPictures();
@@ -56,17 +70,15 @@ public class DesktoBeauty
 
 	private static List<Path> loadBackgroundPictures() throws IOException
 	{
-		Path backgroundsFolder = Path.of(System.getProperty("user.home"), "DesktoBeauty", "Desktop Backgrounds");
-
-		if(Files.notExists(backgroundsFolder))
+		if(Files.notExists(BACKGROUNDS_FOLDER_PATH))
 		{
-			LOGGER.info("Please wait while creating the Backgrounds Folder at \"{}\"...", backgroundsFolder.toString());
-			Files.createDirectories(backgroundsFolder);
+			LOGGER.info("Please wait while creating the Backgrounds Folder at \"{}\"...", BACKGROUNDS_FOLDER_PATH.toString());
+			Files.createDirectories(BACKGROUNDS_FOLDER_PATH);
 			LOGGER.info("Done!");
 			System.exit(0);
 		}
 
-		List<Path> backgrounds = Files.list(backgroundsFolder).collect(toList());
+		List<Path> backgrounds = Files.list(BACKGROUNDS_FOLDER_PATH).collect(toList());
 
 		if(backgrounds.isEmpty())
 		{
@@ -75,5 +87,58 @@ public class DesktoBeauty
 		}
 		
 		return backgrounds;
+	}
+
+	private static void setGlobalExceptionLogger() 
+	{
+		Thread.setDefaultUncaughtExceptionHandler((thread, throwable) -> 
+		{
+			State state = State.current();
+
+			switch(state) 
+			{
+			case RUNNING:
+				LOGGER.error("Error while switching a Background Picture", throwable);
+				break;
+
+			case SETTING_SYSTEM_TRAY:
+				String action = (throwable instanceof IOException ? "reading" : "displaying");
+
+				LOGGER.error("Error while {} the System-Tray's Image", action, throwable);
+				break;
+
+			default:
+				LOGGER.fatal("NO handler was defined to handle exceptions within the '{}' state! {}", state.name(), throwable);
+				System.exit(1);
+				break;
+			}
+		});
+	}
+
+	private static void showSystemTray() throws AWTException, IOException 
+	{
+		State.set(SETTING_SYSTEM_TRAY);
+
+		new SystemTrayBuilder()
+		.withTooltip("DesktoBeauty")
+		.withIcon(ImageIO.read(DesktoBeauty.class.getResource("/System Tray.png")))
+
+		//Open Main Folder
+		.withMenuItem("Open Backgrounds Folder", event ->
+		{
+			try 
+			{
+				Desktop.getDesktop().open(BACKGROUNDS_FOLDER_PATH.toFile());
+			} 
+			catch(IOException exception) 
+			{
+				LOGGER.error("Cannot open the backgrounds folder!", exception);
+			}
+		})
+
+		//Stop 
+		.withMenuItem("Stop", event -> System.exit(0))
+
+		.display();
 	}
 }
