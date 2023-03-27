@@ -85,6 +85,7 @@ public class DesktoBeauty
 		if(backgrounds.isEmpty())
 		{
 			LOGGER.error("The Backgrounds Folder is empty - You have to insert at least one background!");
+			openBackgroundsFolder();
 			System.exit(1);
 		}
 		
@@ -124,23 +125,21 @@ public class DesktoBeauty
 		new SystemTrayBuilder()
 		.withTooltip("DesktoBeauty")
 		.withIcon(ImageIO.read(DesktoBeauty.class.getResource("/System Tray.png")))
-
-		//Open Main Folder
-		.withMenuItem("Open Backgrounds Folder", event ->
-		{
-			try 
-			{
-				Desktop.getDesktop().open(BACKGROUNDS_FOLDER_PATH.toFile());
-			} 
-			catch(IOException exception) 
-			{
-				LOGGER.error("Cannot open the backgrounds folder!", exception);
-			}
-		})
-
-		//Stop 
+		.withMenuItem("Open Backgrounds Folder", event -> openBackgroundsFolder())
 		.withMenuItem("Stop", event -> System.exit(0))
 
 		.display();
+	}
+	
+	private static void openBackgroundsFolder() 
+	{
+		try 
+		{
+			Desktop.getDesktop().open(BACKGROUNDS_FOLDER_PATH.toFile());
+		} 
+		catch(IOException exception) 
+		{
+			LOGGER.error("Cannot open the backgrounds folder!", exception);
+		}
 	}
 }
