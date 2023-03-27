@@ -78,7 +78,9 @@ public class DesktoBeauty
 			System.exit(0);
 		}
 
-		List<Path> backgrounds = Files.list(BACKGROUNDS_FOLDER_PATH).collect(toList());
+		List<Path> backgrounds = Files.walk(BACKGROUNDS_FOLDER_PATH)
+				.filter(DesktopPicture::isSupportedExtension)
+				.collect(toList());
 
 		if(backgrounds.isEmpty())
 		{
