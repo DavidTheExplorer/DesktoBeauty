@@ -1,10 +1,14 @@
 package dte.desktobeauty.utils;
 
-import static java.time.Duration.ZERO;
+import static java.time.temporal.ChronoUnit.DAYS;
+import static java.time.temporal.ChronoUnit.HOURS;
+import static java.time.temporal.ChronoUnit.MILLIS;
+import static java.time.temporal.ChronoUnit.MINUTES;
+import static java.time.temporal.ChronoUnit.SECONDS;
 
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
-import java.util.stream.IntStream;
+import java.util.concurrent.TimeUnit;
 
 public class TimeUtils 
 {
@@ -21,37 +25,50 @@ public class TimeUtils
 	{
 		String[] components = time.replace(",", "").replace(".", "").split(" ");
 
-		return IntStream.iterate(0, i -> i < components.length-1, i -> i+2)
-				.mapToObj(i -> 
-				{
-					int amount = Integer.parseInt(components[i]);
-					ChronoUnit unit = parseChronoUnit(components[i+1].toUpperCase());
-
-					return Duration.of(amount, unit);
-				})
-				.reduce(ZERO, Duration::plus);
+		Duration result = Duration.ZERO;
+		
+		for(int i = 0; i < components.length-1; i += 2) 
+		{
+			int amount = Integer.parseInt(components[i]);
+			ChronoUnit unit = parseChronoUnit(components[i+1].toUpperCase());
+			
+			result = result.plus(Duration.of(amount, unit));
+		}
+		
+		return result;
 	}
 
 	public static String describe(Duration duration) 
 	{
-		String result = 
-				describeUnit("days", duration.toDaysPart()) + 
-				describeUnit("hours", duration.toHoursPart()) + 
-				describeUnit("minutes", duration.toMinutesPart()) + 
-				describeUnit("seconds", duration.toSecondsPart()) + 
-				describeUnit("millis", duration.toMinutesPart());
+		String result = "";
+		long totalSeconds = duration.getSeconds();
 		
+		for(ChronoUnit unit : new ChronoUnit[]{DAYS, HOURS, MINUTES, SECONDS}) 
+		{
+			long unitSeconds = unit.getDuration().getSeconds();
+			long containedUnits = totalSeconds / unitSeconds;
+			totalSeconds -= (unitSeconds * containedUnits);
+			
+			result += describeUnit(unit, containedUnits);
+		}
+		
+		//if there are milliseconds in the duration, add them separately because the loop couldn't account them
+		result += describeUnit(MILLIS, TimeUnit.NANOSECONDS.toMillis(duration.getNano()));
+		
+		//remove the ", " from the end
 		if(result.endsWith(", "))
 			result = result.substring(0, result.length()-2);
 
 		return result;
 	}
 
-	private static String describeUnit(String unitName, long amount) 
+	private static String describeUnit(ChronoUnit unit, long amount) 
 	{
 		if(amount == 0)
 			return "";
 
+		String unitName = unit.name().toLowerCase();
+		
 		if(amount == 1 && unitName.endsWith("s"))
 			unitName = unitName.substring(0, unitName.length()-1);
 
