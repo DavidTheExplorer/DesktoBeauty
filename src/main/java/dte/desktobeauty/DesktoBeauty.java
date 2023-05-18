@@ -9,6 +9,7 @@ import java.awt.Desktop;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.List;
 
@@ -28,7 +29,7 @@ public class DesktoBeauty
 {
 	private static final Logger LOGGER = LogManager.getLogger(DesktoBeauty.class);
 	
-	private static final Path BACKGROUNDS_FOLDER_PATH = Path.of(System.getProperty("user.home"), "DesktoBeauty", "Desktop Backgrounds");
+	private static final Path BACKGROUNDS_FOLDER_PATH = Paths.get(System.getProperty("user.home"), "DesktoBeauty", "Desktop Backgrounds");
 
 	public static void main(String[] args) throws Exception
 	{
