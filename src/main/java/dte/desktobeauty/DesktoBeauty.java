@@ -30,14 +30,17 @@ public class DesktoBeauty
 
 	public static void main(String[] args) throws Exception
 	{
+		//init the program
 		Thread.setDefaultUncaughtExceptionHandler(new PopupExceptionHandler());
 		showSystemTray();
 		State.set(RUNNING);
 
+		//parse the program's arguments
 		Duration changeDelay = TimeUtils.parseDuration(args[0]);
 		ElementSelector<Path> pictureSelector = ElementSelector.fromName(args[1]);
 		List<Path> backgroundPictures = loadBackgroundPictures();
 		
+		//display the arguments to the user
 		AlertUtils.info(
 				String.format("Starting to change your Desktop's Background every %s.", args[0]),
 				String.format("%d Backgrounds were found!", backgroundPictures.size()),
@@ -50,10 +53,8 @@ public class DesktoBeauty
 			//wait before setting a new background picture
 			Thread.sleep(changeDelay.toMillis());
 			
-			//select a picture
-			Path selectedPicture = pictureSelector.selectFrom(backgroundPictures);
-			
-			DesktopPicture.set(selectedPicture);
+			//set a new picture
+			DesktopPicture.set(pictureSelector.selectFrom(backgroundPictures));
 		}
 	}
 
