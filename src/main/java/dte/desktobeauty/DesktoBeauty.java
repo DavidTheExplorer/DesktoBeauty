@@ -2,6 +2,7 @@ package dte.desktobeauty;
 
 import static dte.desktobeauty.state.State.RUNNING;
 import static dte.desktobeauty.state.State.SETTING_SYSTEM_TRAY;
+import static dte.desktobeauty.utils.UncheckedExceptions.unchecked;
 import static java.util.stream.Collectors.toList;
 
 import java.awt.AWTException;
@@ -15,25 +16,20 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import dte.desktobeauty.desktop.DesktopPicture;
 import dte.desktobeauty.elementselector.ElementSelector;
 import dte.desktobeauty.state.State;
-import dte.desktobeauty.utils.FileUtils;
+import dte.desktobeauty.utils.AlertUtils;
 import dte.desktobeauty.utils.SystemTrayBuilder;
 import dte.desktobeauty.utils.TimeUtils;
 
 public class DesktoBeauty
 {
-	private static final Logger LOGGER = LogManager.getLogger(DesktoBeauty.class);
-	
 	private static final Path BACKGROUNDS_FOLDER_PATH = Paths.get(System.getProperty("user.home"), "DesktoBeauty", "Desktop Backgrounds");
 
 	public static void main(String[] args) throws Exception
 	{
-		setGlobalExceptionLogger();
+		setGlobalExceptionMessager();
 		showSystemTray();
 		State.set(RUNNING);
 
@@ -41,11 +37,12 @@ public class DesktoBeauty
 		ElementSelector<Path> pictureSelector = ElementSelector.fromName(args[1]);
 		List<Path> backgroundPictures = loadBackgroundPictures();
 		
-		LOGGER.info("Starting to change your Desktop's background every {}!", args[0]);
-		LOGGER.info("-~-Settings -~-");
-		LOGGER.info("» Backgrounds Amount: {}", backgroundPictures.size());
-		LOGGER.info("» Picture Selector: {}", pictureSelector.getName());
-		LOGGER.info("");
+		AlertUtils.info(
+				String.format("Starting to change your Desktop's Background every %s.", args[0]),
+				String.format("%d Backgrounds were found!", backgroundPictures.size()),
+				" ",
+				"Settings:",
+				String.format("> Using the \"%s\" Selector to select a new picture.", pictureSelector.getName()));
 
 		while(true) 
 		{
@@ -56,7 +53,6 @@ public class DesktoBeauty
 			Path selectedPicture = pictureSelector.selectFrom(backgroundPictures);
 			
 			DesktopPicture.set(selectedPicture);
-			LOGGER.info("New Background: \"{}\"", FileUtils.getNameWithoutExtension(selectedPicture));
 		}
 	}
 
@@ -64,9 +60,10 @@ public class DesktoBeauty
 	{
 		if(Files.notExists(BACKGROUNDS_FOLDER_PATH))
 		{
-			LOGGER.info("Please wait while creating the Backgrounds Folder at \"{}\"...", BACKGROUNDS_FOLDER_PATH.toString());
 			Files.createDirectories(BACKGROUNDS_FOLDER_PATH);
-			LOGGER.info("Done!");
+			AlertUtils.error("Successfully created your Backgrounds Folder at:", BACKGROUNDS_FOLDER_PATH.toString(), " ", "Click on OK to open it.");
+			openBackgroundsFolder();
+			
 			System.exit(0);
 		}
 
@@ -76,37 +73,40 @@ public class DesktoBeauty
 
 		if(backgrounds.isEmpty())
 		{
-			LOGGER.error("The Backgrounds Folder is empty - You have to insert at least one background!");
+			AlertUtils.error("Your Backgrounds Folder is empty!", "You have to insert at least one background.", " ", "Opening...");
 			openBackgroundsFolder();
+			
 			System.exit(1);
 		}
 		
 		return backgrounds;
 	}
 
-	private static void setGlobalExceptionLogger() 
+	private static void setGlobalExceptionMessager() 
 	{
 		Thread.setDefaultUncaughtExceptionHandler((thread, throwable) -> 
 		{
+			String message = throwable.getMessage();
 			State state = State.current();
 
 			switch(state) 
 			{
 			case RUNNING:
-				LOGGER.error("Error while switching a Background Picture", throwable);
+				AlertUtils.error("Error while switching a Background Picture:", message);
 				break;
 
 			case SETTING_SYSTEM_TRAY:
 				String action = (throwable instanceof IOException ? "reading" : "displaying");
 
-				LOGGER.error("Error while {} the System-Tray's Image", action, throwable);
+				AlertUtils.error(String.format("Error while %s the System-Tray's Image:", action), message);
 				break;
 
 			default:
-				LOGGER.fatal("NO handler was defined to handle exceptions within the '{}' state! {}", state.name(), throwable);
-				System.exit(1);
+				AlertUtils.error(String.format("NO handler was defined to handle exceptions within the '%s' state:", state.name()), message);
 				break;
 			}
+			
+			System.exit(1);
 		});
 	}
 
@@ -123,15 +123,8 @@ public class DesktoBeauty
 		.display();
 	}
 	
-	private static void openBackgroundsFolder() 
+	private static void openBackgroundsFolder()
 	{
-		try 
-		{
-			Desktop.getDesktop().open(BACKGROUNDS_FOLDER_PATH.toFile());
-		} 
-		catch(IOException exception) 
-		{
-			LOGGER.error("Cannot open the backgrounds folder!", exception);
-		}
+		unchecked(() -> Desktop.getDesktop().open(BACKGROUNDS_FOLDER_PATH.toFile())).run();
 	}
 }
