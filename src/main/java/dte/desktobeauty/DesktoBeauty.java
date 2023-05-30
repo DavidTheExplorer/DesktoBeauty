@@ -18,6 +18,7 @@ import javax.imageio.ImageIO;
 
 import dte.desktobeauty.desktop.DesktopPicture;
 import dte.desktobeauty.elementselector.ElementSelector;
+import dte.desktobeauty.exceptions.PopupExceptionHandler;
 import dte.desktobeauty.state.State;
 import dte.desktobeauty.utils.AlertUtils;
 import dte.desktobeauty.utils.SystemTrayBuilder;
@@ -29,7 +30,7 @@ public class DesktoBeauty
 
 	public static void main(String[] args) throws Exception
 	{
-		setGlobalExceptionMessager();
+		Thread.setDefaultUncaughtExceptionHandler(new PopupExceptionHandler());
 		showSystemTray();
 		State.set(RUNNING);
 
@@ -80,34 +81,6 @@ public class DesktoBeauty
 		}
 		
 		return backgrounds;
-	}
-
-	private static void setGlobalExceptionMessager() 
-	{
-		Thread.setDefaultUncaughtExceptionHandler((thread, throwable) -> 
-		{
-			String message = throwable.getMessage();
-			State state = State.current();
-
-			switch(state) 
-			{
-			case RUNNING:
-				AlertUtils.error("Error while switching a Background Picture:", message);
-				break;
-
-			case SETTING_SYSTEM_TRAY:
-				String action = (throwable instanceof IOException ? "reading" : "displaying");
-
-				AlertUtils.error(String.format("Error while %s the System-Tray's Image:", action), message);
-				break;
-
-			default:
-				AlertUtils.error(String.format("NO handler was defined to handle exceptions within the '%s' state:", state.name()), message);
-				break;
-			}
-			
-			System.exit(1);
-		});
 	}
 
 	private static void showSystemTray() throws AWTException, IOException 
