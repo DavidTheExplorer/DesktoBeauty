@@ -55,17 +55,8 @@ public class DesktoBeauty
 			//select a picture
 			Path selectedPicture = pictureSelector.selectFrom(backgroundPictures);
 			
-			//set it & print the result(success or failure)
-			String pictureName = FileUtils.getNameWithoutExtension(selectedPicture);
-			
-			if(!DesktopPicture.isSupportedExtension(selectedPicture)) 
-			{
-				LOGGER.error("Failed to set the background to \"{}\" due to an unsupported extension! The allowed ones are: {}.", pictureName, String.join(", ", DesktopPicture.getAllowedExtensions()));
-				continue;
-			}
-			
 			DesktopPicture.set(selectedPicture);
-			LOGGER.info("New Background: \"{}\"", pictureName);
+			LOGGER.info("New Background: \"{}\"", FileUtils.getNameWithoutExtension(selectedPicture));
 		}
 	}
 
