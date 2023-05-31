@@ -14,7 +14,14 @@ public interface ElementSelector<T>
 	T selectFrom(List<T> list);
 	
 	
-	
+	/**
+	 * Parses and returns an {@code ElemenetSelector} by name.
+	 * @param <T> The type of objects the selector should treat.
+	 * @param selectorName The name of the selector to search.
+	 * 
+	 * @return A selector whose name matches the provided name.
+	 * @throws IllegalArgumentException If no such selector was found.
+	 */
 	public static <T> ElementSelector<T> fromName(String selectorName)
 	{
 		return Arrays.asList(new RandomElementSelector<T>(), new RandomOrderSelector<T>())
