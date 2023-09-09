@@ -40,13 +40,8 @@ public class DesktoBeauty
 		ElementSelector<Path> pictureSelector = ElementSelector.fromName(args[1]);
 		List<Path> backgroundPictures = loadBackgroundPictures();
 		
-		//display the arguments to the user
-		AlertUtils.info(
-				String.format("Starting to change your Desktop's Background every %s.", args[0]),
-				String.format("%d Backgrounds were found!", backgroundPictures.size()),
-				" ",
-				"Settings:",
-				String.format("> Using the \"%s\" Selector to select a new picture.", pictureSelector.getName()));
+		//display the settings in a popup
+		displaySettings(args[0], backgroundPictures, pictureSelector);
 
 		while(true) 
 		{
@@ -93,12 +88,21 @@ public class DesktoBeauty
 		.withIcon(ImageIO.read(DesktoBeauty.class.getResource("/System Tray.png")))
 		.withMenuItem("Open Backgrounds Folder", event -> openBackgroundsFolder())
 		.withMenuItem("Stop", event -> System.exit(0))
-
 		.display();
 	}
 	
 	private static void openBackgroundsFolder()
 	{
 		unchecked(() -> Desktop.getDesktop().open(BACKGROUNDS_FOLDER_PATH.toFile())).run();
+	}
+	
+	private static void displaySettings(String changeDelay, List<Path> backgroundPictures, ElementSelector<Path> pictureSelector) 
+	{
+		AlertUtils.info(
+				String.format("Starting to change your Desktop's Background every %s.", changeDelay),
+				String.format("%d Backgrounds were found!", backgroundPictures.size()),
+				" ",
+				"Settings:",
+				String.format("> Using the \"%s\" Selector to select a new picture.", pictureSelector.getName()));
 	}
 }
