@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * This interface represents logic behind selecting an element from a {@link java.util.List}.
+ * This interface represents logic of selecting an element from a {@link java.util.List}.
  *
  * @param <T> The type of the elements in the list.
  */
@@ -15,7 +15,7 @@ public interface ElementSelector<T>
 	
 	
 	/**
-	 * Parses and returns an {@code ElemenetSelector} by name.
+	 * Returns an {@code ElemenetSelector} that corresponds to the provided {@code name}.
 	 * @param <T> The type of objects the selector should treat.
 	 * @param selectorName The name of the selector to search.
 	 * 

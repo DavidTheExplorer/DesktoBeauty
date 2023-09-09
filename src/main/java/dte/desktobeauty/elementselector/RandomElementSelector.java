@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
- * Selects a random element from a list(without any repetition limits).
+ * Selects a random element without any repetition limits.
  *
  * @param <T> The type of the elements in the list.
  */

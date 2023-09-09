@@ -30,12 +30,12 @@ public class DesktoBeauty
 
 	public static void main(String[] args) throws Exception
 	{
-		//init the program
+		//init
 		Thread.setDefaultUncaughtExceptionHandler(new PopupExceptionHandler());
 		showSystemTray();
 		State.set(RUNNING);
 
-		//parse the program's arguments
+		//parse the arguments
 		Duration changeDelay = TimeUtils.parseDuration(args[0]);
 		ElementSelector<Path> pictureSelector = ElementSelector.fromName(args[1]);
 		List<Path> backgroundPictures = loadBackgroundPictures();

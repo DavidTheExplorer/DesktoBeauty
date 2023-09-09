@@ -11,7 +11,7 @@ import java.util.Queue;
 import java.util.stream.IntStream;
 
 /**
- * Selects a random element from a list, but the selected elements cannot repeat until the entire list is consumed.
+ * Selects a random element but returned elements cannot repeat until the entire list is consumed.
  * <p>
  * Example of calls when applied on the list [1, 2, 3] -> <i>3, 1, 2, 1, 3, 2</i> So the number 3 cannot repeat until 2 and 1 are returned.
  *
