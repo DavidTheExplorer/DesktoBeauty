@@ -40,9 +40,6 @@ public class DesktoBeauty
 		ElementSelector<Path> pictureSelector = ElementSelector.fromName(args[1]);
 		List<Path> backgroundPictures = loadBackgroundPictures();
 		
-		//display the settings in a popup
-		displaySettings(args[0], backgroundPictures, pictureSelector);
-
 		while(true) 
 		{
 			//wait before setting a new background picture
@@ -94,15 +91,5 @@ public class DesktoBeauty
 	private static void openBackgroundsFolder()
 	{
 		unchecked(() -> Desktop.getDesktop().open(BACKGROUNDS_FOLDER_PATH.toFile())).run();
-	}
-	
-	private static void displaySettings(String changeDelay, List<Path> backgroundPictures, ElementSelector<Path> pictureSelector) 
-	{
-		AlertUtils.info(
-				String.format("Starting to change your Desktop's Background every %s.", changeDelay),
-				String.format("%d Backgrounds were found!", backgroundPictures.size()),
-				" ",
-				"Settings:",
-				String.format("> Using the \"%s\" Selector to select a new picture.", pictureSelector.getName()));
 	}
 }
