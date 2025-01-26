@@ -42,11 +42,10 @@ public class DesktoBeauty
 		
 		while(true) 
 		{
-			//wait before setting a new background picture
-			Thread.sleep(changeDelay.toMillis());
-			
-			//set a new picture
 			DesktopPicture.set(pictureSelector.selectFrom(backgroundPictures));
+
+			//wait before setting a new picture
+			Thread.sleep(changeDelay.toMillis());
 		}
 	}
 
