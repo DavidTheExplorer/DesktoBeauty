@@ -28,8 +28,11 @@ public class RandomOrderSelector extends AbstractPictureSelector
 	@Override
 	public Path selectFrom(List<Path> pictures)
 	{
-		return this.selectors.computeIfAbsent(pictures, IndexSelector::new).next();
+		int nextIndex = this.selectors.computeIfAbsent(pictures, IndexSelector::new).next();
+
+		return pictures.get(nextIndex);
 	}
+
 
 	
 	private static class IndexSelector
@@ -41,13 +44,13 @@ public class RandomOrderSelector extends AbstractPictureSelector
 		{
 			this.source = source;
 		}
-		
-		public Path next()
+
+		public int next()
 		{
 			if(this.indexesLeft.isEmpty())
 				regenerate();
 			
-			return this.source.get(this.indexesLeft.poll());
+			return this.indexesLeft.poll();
 		}
 		
 		public void regenerate() 
