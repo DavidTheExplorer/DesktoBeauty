@@ -1,7 +1,6 @@
 package dte.desktobeauty;
 
 import static dte.desktobeauty.state.State.RUNNING;
-import static dte.desktobeauty.state.State.SETTING_SYSTEM_TRAY;
 import static dte.desktobeauty.utils.UncheckedExceptions.unchecked;
 import static java.util.stream.Collectors.toList;
 
@@ -78,8 +77,6 @@ public class DesktoBeauty
 
 	private static void showSystemTray() throws AWTException, IOException 
 	{
-		State.set(SETTING_SYSTEM_TRAY);
-
 		new SystemTrayBuilder()
 		.withTooltip("DesktoBeauty")
 		.withIcon(ImageIO.read(DesktoBeauty.class.getResource("/System Tray.png")))

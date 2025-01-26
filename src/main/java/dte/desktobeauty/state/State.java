@@ -13,11 +13,6 @@ public enum State
 	INITIALIZATION,
 	
 	/**
-	 * When the program is setting the System Tray Icon.
-	 */
-	SETTING_SYSTEM_TRAY,
-	
-	/**
 	 * When the program is changing background pictures.
 	 */
 	RUNNING;

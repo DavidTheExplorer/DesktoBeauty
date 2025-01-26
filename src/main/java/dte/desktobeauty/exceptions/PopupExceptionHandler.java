@@ -24,12 +24,6 @@ public class PopupExceptionHandler implements UncaughtExceptionHandler
 		case RUNNING:
 			AlertUtils.error("Error while switching a Background Picture:", stackTrace);
 			break;
-
-		case SETTING_SYSTEM_TRAY:
-			String action = (throwable instanceof IOException ? "reading" : "displaying");
-
-			AlertUtils.error(String.format("Error while %s the System-Tray's Image:", action), stackTrace);
-			break;
 		}
 
 		System.exit(1);
