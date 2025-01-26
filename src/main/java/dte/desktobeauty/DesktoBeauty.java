@@ -1,6 +1,5 @@
 package dte.desktobeauty;
 
-import static dte.desktobeauty.state.State.INITIALIZATION;
 import static dte.desktobeauty.state.State.RUNNING;
 import static dte.desktobeauty.utils.UncheckedExceptions.unchecked;
 import static java.util.stream.Collectors.toList;

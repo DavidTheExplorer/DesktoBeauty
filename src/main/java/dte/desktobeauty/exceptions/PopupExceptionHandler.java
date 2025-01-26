@@ -1,6 +1,5 @@
 package dte.desktobeauty.exceptions;
 
-import java.io.IOException;
 import java.lang.Thread.UncaughtExceptionHandler;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -17,13 +16,8 @@ public class PopupExceptionHandler implements UncaughtExceptionHandler
 		
 		switch(State.current()) 
 		{
-		case INITIALIZATION:
-			AlertUtils.error("Error during initialization:", stackTrace);
-			break;
-
-		case RUNNING:
-			AlertUtils.error("Error while switching a Background Picture:", stackTrace);
-			break;
+			case INITIALIZATION -> AlertUtils.error("Error during initialization:", stackTrace);
+			case RUNNING -> AlertUtils.error("Error while switching a Background Picture:", stackTrace);
 		}
 
 		System.exit(1);
