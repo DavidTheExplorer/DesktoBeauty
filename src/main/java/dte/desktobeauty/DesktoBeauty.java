@@ -1,7 +1,6 @@
 package dte.desktobeauty;
 
 import static dte.desktobeauty.state.State.RUNNING;
-import static dte.desktobeauty.utils.UncheckedExceptions.unchecked;
 import static java.util.stream.Collectors.toList;
 
 import java.awt.AWTException;
@@ -15,6 +14,7 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
+import com.machinezoo.noexception.Exceptions;
 import dte.desktobeauty.desktop.DesktopPicture;
 import dte.desktobeauty.elementselector.ElementSelector;
 import dte.desktobeauty.exceptions.PopupExceptionHandler;
@@ -88,6 +88,6 @@ public class DesktoBeauty
 	
 	private static void openBackgroundsFolder()
 	{
-		unchecked(() -> Desktop.getDesktop().open(BACKGROUNDS_FOLDER_PATH.toFile())).run();
+		Exceptions.sneak().run(() -> Desktop.getDesktop().open(BACKGROUNDS_FOLDER_PATH.toFile()));
 	}
 }

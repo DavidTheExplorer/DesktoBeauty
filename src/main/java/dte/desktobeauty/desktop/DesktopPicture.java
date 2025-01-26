@@ -7,7 +7,6 @@ import java.util.Set;
 
 import dte.desktobeauty.exceptions.UnsupportedExtensionException;
 import dte.desktobeauty.utils.FileUtils;
-import dte.desktobeauty.utils.User32;
 
 public class DesktopPicture 
 {
@@ -18,8 +17,6 @@ public class DesktopPicture
 	 * 
 	 * @param picturePath The path to the new background picture.
 	 * @throws UnsupportedExtensionException If the provided path's extension either doesn't represent a picture, or not supported.
-	 * 
-	 * @see #getAllowedExtensions()
 	 */
 	public static void set(Path picturePath) throws UnsupportedExtensionException
 	{
@@ -38,15 +35,5 @@ public class DesktopPicture
 	public static boolean isSupportedExtension(Path picturePath) 
 	{
 		return ALLOWED_EXTENSIONS.contains(FileUtils.getExtension(picturePath));
-	}
-	
-	/**
-	 * Returns the allowed extensions for desktop backgrounds.
-	 * 
-	 * @return The list of the allowed extensions for desktop backgrounds.
-	 */
-	public static Set<String> getAllowedExtensions()
-	{
-		return new HashSet<>(ALLOWED_EXTENSIONS);
 	}
 }

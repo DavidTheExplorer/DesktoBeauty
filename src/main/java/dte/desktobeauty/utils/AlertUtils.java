@@ -1,15 +1,15 @@
 package dte.desktobeauty.utils;
 
-import static dte.desktobeauty.utils.UncheckedExceptions.unchecked;
+import com.machinezoo.noexception.Exceptions;
 
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
 public class AlertUtils
 {
-	public static void info(String... message)
+	static
 	{
-		display(JOptionPane.INFORMATION_MESSAGE, message);
+		Exceptions.sneak().run(() -> UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()));
 	}
 	
 	public static void error(String... message) 
@@ -17,15 +17,8 @@ public class AlertUtils
 		display(JOptionPane.ERROR_MESSAGE, message);
 	}
 	
-	private static void display(int messageType, String... message) 
+	private static void display(int messageType, String... message)
 	{
 		JOptionPane.showMessageDialog(null, message, "DesktoBeauty", messageType);
-	}
-	
-	
-	
-	static 
-	{
-		unchecked(() -> UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName())).run();
 	}
 }
