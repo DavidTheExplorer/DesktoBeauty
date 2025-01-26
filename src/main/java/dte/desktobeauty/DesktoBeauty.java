@@ -1,5 +1,6 @@
 package dte.desktobeauty;
 
+import static dte.desktobeauty.state.State.INITIALIZATION;
 import static dte.desktobeauty.state.State.RUNNING;
 import static dte.desktobeauty.utils.UncheckedExceptions.unchecked;
 import static java.util.stream.Collectors.toList;
@@ -32,12 +33,13 @@ public class DesktoBeauty
 		//init
 		Thread.setDefaultUncaughtExceptionHandler(new PopupExceptionHandler());
 		showSystemTray();
-		State.set(RUNNING);
 
 		//parse the arguments
 		Duration changeDelay = TimeUtils.parseDuration(args[0]);
 		ElementSelector<Path> pictureSelector = ElementSelector.fromName(args[1]);
 		List<Path> backgroundPictures = loadBackgroundPictures();
+
+		State.set(RUNNING);
 		
 		while(true) 
 		{
