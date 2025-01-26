@@ -16,8 +16,8 @@ import javax.imageio.ImageIO;
 
 import com.machinezoo.noexception.Exceptions;
 import dte.desktobeauty.desktop.DesktopPicture;
-import dte.desktobeauty.elementselector.ElementSelector;
 import dte.desktobeauty.exceptions.PopupExceptionHandler;
+import dte.desktobeauty.pictureselector.PictureSelector;
 import dte.desktobeauty.state.State;
 import dte.desktobeauty.utils.AlertUtils;
 import dte.desktobeauty.utils.SystemTrayBuilder;
@@ -35,7 +35,7 @@ public class DesktoBeauty
 
 		//parse the arguments
 		Duration changeDelay = TimeUtils.parseDuration(args[0]);
-		ElementSelector<Path> pictureSelector = ElementSelector.fromName(args[1]);
+		PictureSelector pictureSelector = PictureSelector.fromName(args[1]);
 		List<Path> backgroundPictures = loadBackgroundPictures();
 
 		State.set(RUNNING);

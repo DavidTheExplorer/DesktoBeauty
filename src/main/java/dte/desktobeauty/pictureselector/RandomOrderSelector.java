@@ -1,7 +1,8 @@
-package dte.desktobeauty.elementselector;
+package dte.desktobeauty.pictureselector;
 
 import static java.util.stream.Collectors.toList;
 
+import java.nio.file.Path;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -11,38 +12,37 @@ import java.util.Queue;
 import java.util.stream.IntStream;
 
 /**
- * Selects a random element but returned elements cannot repeat until the entire list is consumed.
+ * Selects a random picture, but the returned ones cannot repeat until the entire list is consumed.
  * <p>
- * Example of calls when applied on the list [1, 2, 3] -> <i>3, 1, 2, 1, 3, 2</i> So the number 3 cannot repeat until 2 and 1 are returned.
- *
- * @param <T> The type of the elements in the list.
+ * Example of consecutive calls where each number represents an index -> <i>3, 1, 2, 1, 3, 2</i> So the third index cannot repeat until 2 and 1 are returned.
  */
-public class RandomOrderSelector<T> extends AbstractElementSelector<T>
+public class RandomOrderSelector extends AbstractPictureSelector
 {
-	private final Map<List<T>, IndexSelector<T>> selectors = new HashMap<>();
+	private final Map<List<Path>, IndexSelector> selectors = new HashMap<>();
 	
 	public RandomOrderSelector()
 	{
 		super("Random Order");
 	}
-	
+
 	@Override
-	public T selectFrom(List<T> list)
+	public Path selectFrom(List<Path> pictures)
 	{
-		return this.selectors.computeIfAbsent(list, IndexSelector::new).next();
+		return this.selectors.computeIfAbsent(pictures, IndexSelector::new).next();
 	}
+
 	
-	private static class IndexSelector<T>
+	private static class IndexSelector
 	{
-		private final List<T> source;
+		private final List<Path> source;
 		private final Queue<Integer> indexesLeft = new LinkedList<>();
 		
-		public IndexSelector(List<T> source) 
+		public IndexSelector(List<Path> source)
 		{
 			this.source = source;
 		}
 		
-		public T next() 
+		public Path next()
 		{
 			if(this.indexesLeft.isEmpty())
 				regenerate();
