@@ -1,23 +1,23 @@
 package dte.desktobeauty.state;
 
+import dte.desktobeauty.exceptions.PopupExceptionHandler;
+
+/**
+ * Represents the state of the program. Mainly used by {@link PopupExceptionHandler} to determine the correct error message.
+ */
 public enum State
 {
 	/**
-	 * Describes the period when the program is initializing stuff invisible to the user.
+	 * When the program is initializing stuff invisible to the user.
 	 */
-	STATELESS,
+	INITIALIZATION,
 	
 	/**
-	 * Describes the period when the program is setting the System Tray Icon.
-	 */
-	SETTING_SYSTEM_TRAY,
-	
-	/**
-	 * Describes the period when the program is changing background pictures.
+	 * When the program is changing background pictures.
 	 */
 	RUNNING;
 	
-	private static State currentState = STATELESS;
+	private static State currentState = INITIALIZATION;
 	
 	public static State current() 
 	{
