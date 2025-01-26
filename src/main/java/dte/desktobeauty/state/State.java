@@ -10,7 +10,7 @@ public enum State
 	/**
 	 * When the program is initializing stuff invisible to the user.
 	 */
-	STATELESS,
+	INITIALIZATION,
 	
 	/**
 	 * When the program is setting the System Tray Icon.
@@ -22,7 +22,7 @@ public enum State
 	 */
 	RUNNING;
 	
-	private static State currentState = STATELESS;
+	private static State currentState = INITIALIZATION;
 	
 	public static State current() 
 	{

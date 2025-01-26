@@ -17,6 +17,10 @@ public class PopupExceptionHandler implements UncaughtExceptionHandler
 		
 		switch(State.current()) 
 		{
+		case INITIALIZATION:
+			AlertUtils.error("Error during initialization:", stackTrace);
+			break;
+
 		case RUNNING:
 			AlertUtils.error("Error while switching a Background Picture:", stackTrace);
 			break;
@@ -25,10 +29,6 @@ public class PopupExceptionHandler implements UncaughtExceptionHandler
 			String action = (throwable instanceof IOException ? "reading" : "displaying");
 
 			AlertUtils.error(String.format("Error while %s the System-Tray's Image:", action), stackTrace);
-			break;
-
-		default:
-			AlertUtils.error(String.format("NO handler was defined to handle exceptions within the '%s' state:", State.current().name()), stackTrace);
 			break;
 		}
 
