@@ -9,7 +9,7 @@ import dte.desktobeauty.utils.FileUtils;
 
 public class DesktopPicture 
 {
-	private static final Set<String> ALLOWED_EXTENSIONS = new HashSet<>(Arrays.asList("png", "jpg", "jpeg"));
+	private static final Set<String> ALLOWED_EXTENSIONS = new HashSet<>(Arrays.asList("png", "jpg", "jpeg", "bmp"));
 
 	/**
 	 * Sets a new desktop picture.
