@@ -1,17 +1,20 @@
 # DesktoBeauty
-CLI tool that takes control over your Desktop's Background Picture and changes it every certain amount of time.
+Improves the Desktop Experience by periodically changing its background to one of your awesome pictures.
 
-## CLI Parameters
-The following parameters must be specified in-order:
-1. The amount of time to wait between the backgrounds-changing, surrounded by quotes.\
-Example: `"1 minute, 10 seconds"`
+## Setting the Picture Pool
+Upon the first launch, the program generates and opens the folder - so you can fill it with pictures.\
+In order to later modify it, you can access it using the tray icon, and restart the program **if it's currently running**.
 
-2. The background selection algorithm:
+## Configuration
+The program takes the following CLI parameters in this order:
+1. Delay after a background change.\
+    Examples: `"5 seconds"` | `"10 minutes"` | `"1 minute, 10 seconds"`
+
+2. Picture selection Algorithm:
     - **Random**: Selects a random picture.
-    - **Random Order**: Selects a random picture, but a picture cannot repeat until all the rest were selected.\
-    Example using numbers: `1, 3, 2 | 1, 2, 3 | 2, 3, 1`
-    
-    
-## The Backgrounds Folder
-It's located at: `your user folder/DesktoBeauty\Desktop Backgrounds`\
-On first launch, it will be automatically generated and opened for you - so you can immediately insert your favourite pictures! (don't forget to re-run the tool)
+    - **Random Order**: Selects a random picture, but an already selected picture cannot repeat until the rest were selected.\
+    Example using numbers: `1, 3, 2 -> 1, 2, 3 -> 2, 3, 1`
+
+## Download
+You can get the program's jar from the latest release.\
+Run it using: `"start javaw.exe -jar DesktoBeauty [version].jar [parameters]"`
