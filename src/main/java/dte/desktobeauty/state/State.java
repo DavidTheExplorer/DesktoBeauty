@@ -17,7 +17,7 @@ public enum State
 	 */
 	RUNNING;
 	
-	private static State currentState = INITIALIZATION;
+	private static State currentState;
 	
 	public static State current() 
 	{

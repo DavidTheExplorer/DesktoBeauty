@@ -1,5 +1,6 @@
 package dte.desktobeauty;
 
+import static dte.desktobeauty.state.State.INITIALIZATION;
 import static dte.desktobeauty.state.State.RUNNING;
 import static java.util.stream.Collectors.toList;
 
@@ -29,9 +30,7 @@ public class DesktoBeauty
 
 	public static void main(String[] args) throws Exception
 	{
-		//init
-		Thread.setDefaultUncaughtExceptionHandler(new PopupExceptionHandler());
-		showSystemTray();
+		initialize();
 
 		//parse the arguments
 		Duration changeDelay = TimeUtils.parseDuration(args[0]);
@@ -47,6 +46,13 @@ public class DesktoBeauty
 			//wait before setting a new picture
 			Thread.sleep(changeDelay.toMillis());
 		}
+	}
+
+	private static void initialize() throws Exception
+	{
+		State.set(INITIALIZATION);
+		Thread.setDefaultUncaughtExceptionHandler(new PopupExceptionHandler());
+		showSystemTray();
 	}
 
 	private static List<Path> loadBackgroundPictures() throws IOException
