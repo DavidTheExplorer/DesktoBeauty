@@ -1,15 +1,13 @@
 package dte.desktobeauty.desktop;
 
 import java.nio.file.Path;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Set;
 
 import dte.desktobeauty.utils.FileUtils;
 
 public class DesktopPicture 
 {
-	private static final Set<String> ALLOWED_EXTENSIONS = new HashSet<>(Arrays.asList("png", "jpg", "jpeg", "bmp"));
+	private static final Set<String> ALLOWED_EXTENSIONS = Set.of("png", "jpg", "jpeg", "bmp");
 
 	/**
 	 * Sets a new desktop picture.
