@@ -20,7 +20,7 @@ public class DesktopPicture
 	public static void set(Path picturePath)
 	{
 		if(!isSupportedExtension(picturePath))
-			throw new IllegalArgumentException(String.format("Cannot set the desktop picture to a \"%s\" file.", FileUtils.getExtension(picturePath)));
+			throw new IllegalArgumentException(String.format("Cannot set the desktop picture to a \"%s\" file; The allowed extensions are: %s.", FileUtils.getExtension(picturePath), formatAllowedExtensions()));
 		
 		User32.INSTANCE.SystemParametersInfo(0x0014, 0, picturePath.toString(), 1);
 	}
@@ -34,5 +34,10 @@ public class DesktopPicture
 	public static boolean isSupportedExtension(Path picturePath) 
 	{
 		return ALLOWED_EXTENSIONS.contains(FileUtils.getExtension(picturePath));
+	}
+
+	private static String formatAllowedExtensions()
+	{
+		return '[' + String.join(", ", ALLOWED_EXTENSIONS) + ']';
 	}
 }
