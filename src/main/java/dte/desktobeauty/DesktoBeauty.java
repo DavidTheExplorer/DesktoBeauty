@@ -61,7 +61,7 @@ public class DesktoBeauty
 		}
 
 		List<Path> backgrounds = Files.walk(BACKGROUNDS_FOLDER_PATH)
-				.filter(DesktopPicture::isSupportedExtension)
+				.filter(DesktopPicture::isAllowedExtension)
 				.collect(toList());
 
 		if(backgrounds.isEmpty())
