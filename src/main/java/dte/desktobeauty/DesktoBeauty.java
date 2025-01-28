@@ -61,7 +61,7 @@ public class DesktoBeauty
 		if(Files.notExists(BACKGROUNDS_FOLDER_PATH))
 		{
 			Files.createDirectories(BACKGROUNDS_FOLDER_PATH);
-			AlertUtils.info("Successfully created your Backgrounds Folder at:", BACKGROUNDS_FOLDER_PATH.toString(), " ", "Click on OK to open it.");
+			AlertUtils.info("Successfully created your backgrounds folder!", "Click OK to open it.");
 			openBackgroundsFolder();
 			
 			System.exit(0);
@@ -73,7 +73,7 @@ public class DesktoBeauty
 
 		if(backgrounds.isEmpty())
 		{
-			AlertUtils.error("Your Backgrounds Folder is empty!", "You have to insert at least one background.", " ", "Opening...");
+			AlertUtils.error("Your Backgrounds Folder is empty!", "You have to insert at least one.", " ", "Click OK to open it.");
 			openBackgroundsFolder();
 			
 			System.exit(1);
