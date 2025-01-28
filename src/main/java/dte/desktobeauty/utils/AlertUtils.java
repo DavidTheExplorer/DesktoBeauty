@@ -12,6 +12,11 @@ public class AlertUtils
 		Exceptions.sneak().run(() -> UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()));
 	}
 	
+	public static void info(String... message)
+	{
+		display(JOptionPane.INFORMATION_MESSAGE, message);
+	}
+	
 	public static void error(String... message) 
 	{
 		display(JOptionPane.ERROR_MESSAGE, message);

@@ -61,7 +61,7 @@ public class DesktoBeauty
 		if(Files.notExists(BACKGROUNDS_FOLDER_PATH))
 		{
 			Files.createDirectories(BACKGROUNDS_FOLDER_PATH);
-			AlertUtils.error("Successfully created your Backgrounds Folder at:", BACKGROUNDS_FOLDER_PATH.toString(), " ", "Click on OK to open it.");
+			AlertUtils.info("Successfully created your Backgrounds Folder at:", BACKGROUNDS_FOLDER_PATH.toString(), " ", "Click on OK to open it.");
 			openBackgroundsFolder();
 			
 			System.exit(0);
