@@ -1,4 +1,4 @@
-package dte.desktobeauty.pictureselector;
+package dte.desktobeauty.wallpaperselector;
 
 import static java.util.stream.Collectors.toList;
 
@@ -12,11 +12,11 @@ import java.util.Queue;
 import java.util.stream.IntStream;
 
 /**
- * Selects a random picture, but the returned ones cannot repeat until the entire list is consumed.
+ * Selects a random wallpaper, but the returned ones cannot repeat until the entire list is consumed.
  * <p>
  * Example of consecutive calls where each number represents an index -> <i>3, 1, 2, 1, 3, 2</i> So the third index cannot repeat until 2 and 1 are returned.
  */
-public class RandomOrderSelector extends AbstractPictureSelector
+public class RandomOrderSelector extends AbstractWallpaperSelector
 {
 	private final Map<List<Path>, IndexSelector> selectors = new HashMap<>();
 	
@@ -26,11 +26,11 @@ public class RandomOrderSelector extends AbstractPictureSelector
 	}
 
 	@Override
-	public Path selectFrom(List<Path> pictures)
+	public Path selectFrom(List<Path> wallpaperFiles)
 	{
-		int nextIndex = this.selectors.computeIfAbsent(pictures, IndexSelector::new).next();
+		int nextIndex = this.selectors.computeIfAbsent(wallpaperFiles, IndexSelector::new).next();
 
-		return pictures.get(nextIndex);
+		return wallpaperFiles.get(nextIndex);
 	}
 
 

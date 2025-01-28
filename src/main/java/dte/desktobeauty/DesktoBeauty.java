@@ -17,17 +17,17 @@ import java.util.List;
 import javax.imageio.ImageIO;
 
 import com.machinezoo.noexception.Exceptions;
-import dte.desktobeauty.desktop.DesktopPicture;
+import dte.desktobeauty.desktop.DesktopWallpaper;
 import dte.desktobeauty.exceptions.PopupExceptionHandler;
-import dte.desktobeauty.pictureselector.PictureSelector;
 import dte.desktobeauty.state.State;
 import dte.desktobeauty.utils.AlertUtils;
-import dte.desktobeauty.utils.TrayIconBuilder;
 import dte.desktobeauty.utils.TimeUtils;
+import dte.desktobeauty.utils.TrayIconBuilder;
+import dte.desktobeauty.wallpaperselector.WallpaperSelector;
 
 public class DesktoBeauty
 {
-	private static final Path BACKGROUNDS_FOLDER_PATH = Paths.get(System.getProperty("user.home"), "DesktoBeauty", "Desktop Backgrounds");
+	private static final Path WALLPAPER_FOLDER = Paths.get(System.getProperty("user.home"), "DesktoBeauty", "Desktop Wallpapers");
 
 	public static void main(String[] args) throws Exception
 	{
@@ -35,16 +35,16 @@ public class DesktoBeauty
 
 		//parse the arguments
 		Duration changeDelay = TimeUtils.parseDuration(args[0]);
-		PictureSelector pictureSelector = PictureSelector.fromName(args[1]);
-		List<Path> backgroundPictures = loadBackgroundPictures();
+		WallpaperSelector wallpaperSelector = WallpaperSelector.fromName(args[1]);
+		List<Path> wallpapersFiles = loadWallpaperFiles();
 
 		State.set(RUNNING);
 		
 		while(true) 
 		{
-			DesktopPicture.set(pictureSelector.selectFrom(backgroundPictures));
+			DesktopWallpaper.set(wallpaperSelector.selectFrom(wallpapersFiles));
 
-			//wait before setting a new picture
+			//wait before setting a new wallpaper`
 			Thread.sleep(changeDelay.toMillis());
 		}
 	}
@@ -56,30 +56,30 @@ public class DesktoBeauty
 		showTrayIcon();
 	}
 
-	private static List<Path> loadBackgroundPictures() throws IOException
+	private static List<Path> loadWallpaperFiles() throws IOException
 	{
-		if(Files.notExists(BACKGROUNDS_FOLDER_PATH))
+		if(Files.notExists(WALLPAPER_FOLDER))
 		{
-			Files.createDirectories(BACKGROUNDS_FOLDER_PATH);
-			AlertUtils.info("Successfully created your backgrounds folder!", "Click OK to open it.");
-			openBackgroundsFolder();
+			Files.createDirectories(WALLPAPER_FOLDER);
+			AlertUtils.info("Successfully created your Wallpaper Folder!", "Click OK to open it.");
+			openWallpaperFolder();
 			
 			System.exit(0);
 		}
 
-		List<Path> backgrounds = Files.walk(BACKGROUNDS_FOLDER_PATH)
-				.filter(DesktopPicture::isAllowedExtension)
+		List<Path> wallpaperFiles = Files.walk(WALLPAPER_FOLDER)
+				.filter(DesktopWallpaper::isAllowedExtension)
 				.collect(toList());
 
-		if(backgrounds.isEmpty())
+		if(wallpaperFiles.isEmpty())
 		{
-			AlertUtils.error("Your Backgrounds Folder is empty!", "You have to insert at least one.", " ", "Click OK to open it.");
-			openBackgroundsFolder();
+			AlertUtils.error("Your Wallpaper Folder is empty!", "You have to insert at least one.", " ", "Click OK to open it.");
+			openWallpaperFolder();
 			
 			System.exit(1);
 		}
 		
-		return backgrounds;
+		return wallpaperFiles;
 	}
 
 	private static void showTrayIcon() throws AWTException, IOException
@@ -89,13 +89,13 @@ public class DesktoBeauty
 		new TrayIconBuilder()
 		.withTooltip("DesktoBeauty")
 		.withImage(image)
-		.withMenuItem("Open Backgrounds Folder", unused -> openBackgroundsFolder())
+		.withMenuItem("Open Wallpaper Folder", unused -> openWallpaperFolder())
 		.withMenuItem("Stop", unused -> System.exit(0))
 		.display();
 	}
 	
-	private static void openBackgroundsFolder()
+	private static void openWallpaperFolder()
 	{
-		Exceptions.sneak().run(() -> Desktop.getDesktop().open(BACKGROUNDS_FOLDER_PATH.toFile()));
+		Exceptions.sneak().run(() -> Desktop.getDesktop().open(WALLPAPER_FOLDER.toFile()));
 	}
 }
