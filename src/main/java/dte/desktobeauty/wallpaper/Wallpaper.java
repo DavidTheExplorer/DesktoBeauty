@@ -4,12 +4,9 @@ import dte.desktobeauty.utils.User32;
 import dte.desktobeauty.utils.FileUtils;
 
 import java.nio.file.Path;
-import java.util.Set;
 
 public record Wallpaper(Path file)
 {
-    private static final Set<String> PICTURE_EXTENSIONS = Set.of("png", "jpg", "jpeg", "bmp");
-
     public Wallpaper
     {
         if(!isValid(file))
@@ -18,7 +15,7 @@ public record Wallpaper(Path file)
 
     public static boolean isValid(Path file)
     {
-        return PICTURE_EXTENSIONS.contains(FileUtils.getExtension(file));
+        return FileUtils.isPicture(file);
     }
 
     public static void setForDesktop(Wallpaper wallpaper)
@@ -30,6 +27,6 @@ public record Wallpaper(Path file)
 
     private static String formatAllowedExtensions()
     {
-        return '[' + String.join(", ", PICTURE_EXTENSIONS) + ']';
+        return '[' + String.join(", ", FileUtils.PICTURE_EXTENSIONS) + ']';
     }
 }
