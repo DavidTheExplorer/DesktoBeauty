@@ -8,7 +8,7 @@ import java.util.concurrent.ThreadLocalRandom;
 /**
  * Selects a random wallpaper without any limits.
  */
-public class RandomSelector extends AbstractWallpaperSelector
+public class RandomSelector extends AbstractSelector
 {
 	public RandomSelector()
 	{

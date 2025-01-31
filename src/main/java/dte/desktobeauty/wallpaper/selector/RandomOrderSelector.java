@@ -17,7 +17,7 @@ import java.util.stream.IntStream;
  * <p>
  * Example of consecutive calls where each number represents an index -> <i>3, 1, 2, 1, 3, 2</i> So the third index cannot repeat until 2 and 1 are returned.
  */
-public class RandomOrderSelector extends AbstractWallpaperSelector
+public class RandomOrderSelector extends AbstractSelector
 {
 	private final Map<List<Wallpaper>, IndexSelector> selectors = new HashMap<>();
 	
