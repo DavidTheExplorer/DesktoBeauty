@@ -1,13 +1,13 @@
 package dte.desktobeauty;
 
 import com.machinezoo.noexception.Exceptions;
-import dte.desktobeauty.desktop.DesktopWallpaper;
 import dte.desktobeauty.exceptions.PopupExceptionHandler;
 import dte.desktobeauty.state.State;
 import dte.desktobeauty.utils.AlertUtils;
 import dte.desktobeauty.utils.TimeUtils;
 import dte.desktobeauty.utils.TrayIconBuilder;
-import dte.desktobeauty.wallpaperselector.WallpaperSelector;
+import dte.desktobeauty.wallpaper.Wallpaper;
+import dte.desktobeauty.wallpaper.selector.WallpaperSelector;
 
 import javax.imageio.ImageIO;
 import java.awt.AWTException;
@@ -33,29 +33,30 @@ public class Main
         Thread.setDefaultUncaughtExceptionHandler(new PopupExceptionHandler());
         showTrayIcon();
 
-        List<Path> wallpapersFiles = loadWallpaperFiles();
+        List<Wallpaper> wallpapers = loadWallpapers();
         WallpaperSelector wallpaperSelector = WallpaperSelector.fromName(args[1]);
         Duration changeDelay = TimeUtils.parseDuration(args[0]);
 
-        new DesktoBeauty(wallpapersFiles, wallpaperSelector, changeDelay).start();
+        new DesktoBeauty(wallpapers, wallpaperSelector, changeDelay).start();
     }
 
-    private static List<Path> loadWallpaperFiles() throws IOException
+    private static List<Wallpaper> loadWallpapers() throws IOException
     {
         Files.createDirectories(WALLPAPER_FOLDER);
 
-        List<Path> wallpaperFiles = Files.walk(WALLPAPER_FOLDER)
-                .filter(DesktopWallpaper::isAllowedExtension)
+        List<Wallpaper> wallpapers = Files.walk(WALLPAPER_FOLDER)
+                .filter(Wallpaper::isValid)
+                .map(Wallpaper::new)
                 .collect(toList());
 
-        if(wallpaperFiles.isEmpty())
+        if(wallpapers.isEmpty())
         {
             AlertUtils.error("Your Wallpaper Folder is empty!", "You have to insert at least one.", " ", "Click OK to open it.");
             openWallpaperFolder();
             System.exit(1);
         }
 
-        return wallpaperFiles;
+        return wallpapers;
     }
 
     private static void showTrayIcon() throws AWTException, IOException

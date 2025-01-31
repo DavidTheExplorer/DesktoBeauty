@@ -1,8 +1,9 @@
-package dte.desktobeauty.wallpaperselector;
+package dte.desktobeauty.wallpaper.selector;
+
+import dte.desktobeauty.wallpaper.Wallpaper;
 
 import static java.util.stream.Collectors.toList;
 
-import java.nio.file.Path;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -18,7 +19,7 @@ import java.util.stream.IntStream;
  */
 public class RandomOrderSelector extends AbstractWallpaperSelector
 {
-	private final Map<List<Path>, IndexSelector> selectors = new HashMap<>();
+	private final Map<List<Wallpaper>, IndexSelector> selectors = new HashMap<>();
 	
 	public RandomOrderSelector()
 	{
@@ -26,21 +27,21 @@ public class RandomOrderSelector extends AbstractWallpaperSelector
 	}
 
 	@Override
-	public Path selectFrom(List<Path> wallpaperFiles)
+	public Wallpaper selectFrom(List<Wallpaper> wallpapers)
 	{
-		int nextIndex = this.selectors.computeIfAbsent(wallpaperFiles, IndexSelector::new).next();
+		int nextIndex = this.selectors.computeIfAbsent(wallpapers, IndexSelector::new).next();
 
-		return wallpaperFiles.get(nextIndex);
+		return wallpapers.get(nextIndex);
 	}
 
 
 	
 	private static class IndexSelector
 	{
-		private final List<Path> source;
+		private final List<Wallpaper> source;
 		private final Queue<Integer> indexesLeft = new LinkedList<>();
 		
-		public IndexSelector(List<Path> source)
+		public IndexSelector(List<Wallpaper> source)
 		{
 			this.source = source;
 		}

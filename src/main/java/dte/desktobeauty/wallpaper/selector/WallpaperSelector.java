@@ -1,6 +1,7 @@
-package dte.desktobeauty.wallpaperselector;
+package dte.desktobeauty.wallpaper.selector;
 
-import java.nio.file.Path;
+import dte.desktobeauty.wallpaper.Wallpaper;
+
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -10,7 +11,7 @@ import java.util.stream.Stream;
 public interface WallpaperSelector
 {
 	String getName();
-	Path selectFrom(List<Path> wallpaperFiles);
+	Wallpaper selectFrom(List<Wallpaper> wallpapers);
 	
 	
 	/**

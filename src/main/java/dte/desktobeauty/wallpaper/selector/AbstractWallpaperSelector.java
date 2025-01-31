@@ -1,4 +1,4 @@
-package dte.desktobeauty.wallpaperselector;
+package dte.desktobeauty.wallpaper.selector;
 
 public abstract class AbstractWallpaperSelector implements WallpaperSelector
 {

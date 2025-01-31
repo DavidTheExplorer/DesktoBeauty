@@ -1,6 +1,7 @@
-package dte.desktobeauty.wallpaperselector;
+package dte.desktobeauty.wallpaper.selector;
 
-import java.nio.file.Path;
+import dte.desktobeauty.wallpaper.Wallpaper;
+
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -15,10 +16,10 @@ public class RandomSelector extends AbstractWallpaperSelector
 	}
 
 	@Override
-	public Path selectFrom(List<Path> wallpaperFiles)
+	public Wallpaper selectFrom(List<Wallpaper> wallpapers)
 	{
-		int randomIndex = ThreadLocalRandom.current().nextInt(wallpaperFiles.size());
-		
-		return wallpaperFiles.get(randomIndex);
+		int randomIndex = ThreadLocalRandom.current().nextInt(wallpapers.size());
+
+		return wallpapers.get(randomIndex);
 	}
 }

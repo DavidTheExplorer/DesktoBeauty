@@ -2,23 +2,22 @@ package dte.desktobeauty;
 
 import static dte.desktobeauty.state.State.RUNNING;
 
-import java.nio.file.Path;
 import java.time.Duration;
 import java.util.List;
 
-import dte.desktobeauty.desktop.DesktopWallpaper;
 import dte.desktobeauty.state.State;
-import dte.desktobeauty.wallpaperselector.WallpaperSelector;
+import dte.desktobeauty.wallpaper.Wallpaper;
+import dte.desktobeauty.wallpaper.selector.WallpaperSelector;
 
 public class DesktoBeauty
 {
-	private final List<Path> wallpapersFiles;
+	private final List<Wallpaper> wallpapers;
 	private final WallpaperSelector wallpaperSelector;
 	private final Duration delay;
 
-	public DesktoBeauty(List<Path> wallpapersFiles, WallpaperSelector wallpaperSelector, Duration delay)
+	public DesktoBeauty(List<Wallpaper> wallpapers, WallpaperSelector wallpaperSelector, Duration delay)
 	{
-		this.wallpapersFiles = wallpapersFiles;
+		this.wallpapers = wallpapers;
 		this.wallpaperSelector = wallpaperSelector;
 		this.delay = delay;
 	}
@@ -29,14 +28,14 @@ public class DesktoBeauty
 		
 		while(true)
 		{
-			DesktopWallpaper.set(selectNextWallpaper());
+			Wallpaper.setForDesktop(selectNextWallpaper());
 			delay();
 		}
 	}
 
-	private Path selectNextWallpaper()
+	private Wallpaper selectNextWallpaper()
 	{
-		return this.wallpaperSelector.selectFrom(this.wallpapersFiles);
+		return this.wallpaperSelector.selectFrom(this.wallpapers);
 	}
 
 	private void delay()
