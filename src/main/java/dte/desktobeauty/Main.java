@@ -29,12 +29,10 @@ public class Main
 
     public static void main(String[] args) throws Exception
     {
-        //initialization
         State.set(INITIALIZATION);
         Thread.setDefaultUncaughtExceptionHandler(new PopupExceptionHandler());
         showTrayIcon();
 
-        //argument parsing
         List<Path> wallpapersFiles = loadWallpaperFiles();
         WallpaperSelector wallpaperSelector = WallpaperSelector.fromName(args[1]);
         Duration changeDelay = TimeUtils.parseDuration(args[0]);
