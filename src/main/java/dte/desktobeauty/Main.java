@@ -7,7 +7,7 @@ import dte.desktobeauty.utils.AlertUtils;
 import dte.desktobeauty.utils.TimeUtils;
 import dte.desktobeauty.utils.TrayIconBuilder;
 import dte.desktobeauty.wallpaper.Wallpaper;
-import dte.desktobeauty.wallpaper.selector.WallpaperSelector;
+import dte.desktobeauty.wallpaper.WallpaperSelector;
 
 import javax.imageio.ImageIO;
 import java.awt.AWTException;

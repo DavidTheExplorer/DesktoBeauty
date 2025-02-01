@@ -7,7 +7,7 @@ import java.util.List;
 
 import dte.desktobeauty.state.State;
 import dte.desktobeauty.wallpaper.Wallpaper;
-import dte.desktobeauty.wallpaper.selector.WallpaperSelector;
+import dte.desktobeauty.wallpaper.WallpaperSelector;
 
 public class DesktoBeauty
 {

@@ -1,6 +1,7 @@
-package dte.desktobeauty.wallpaper.selector;
+package dte.desktobeauty.wallpaper;
 
-import dte.desktobeauty.wallpaper.Wallpaper;
+import dte.desktobeauty.wallpaper.selector.RandomOrderSelector;
+import dte.desktobeauty.wallpaper.selector.RandomSelector;
 
 import java.util.List;
 import java.util.stream.Stream;

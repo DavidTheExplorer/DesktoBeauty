@@ -1,5 +1,7 @@
 package dte.desktobeauty.wallpaper.selector;
 
+import dte.desktobeauty.wallpaper.WallpaperSelector;
+
 public abstract class AbstractSelector implements WallpaperSelector
 {
 	private final String name;
