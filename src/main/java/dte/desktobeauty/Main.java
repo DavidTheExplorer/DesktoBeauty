@@ -44,14 +44,7 @@ public class Main
 
     private static List<Path> loadWallpaperFiles() throws IOException
     {
-        if(Files.notExists(WALLPAPER_FOLDER))
-        {
-            Files.createDirectories(WALLPAPER_FOLDER);
-            AlertUtils.info("Successfully created your Wallpaper Folder!", "Click OK to open it.");
-            openWallpaperFolder();
-
-            System.exit(0);
-        }
+        Files.createDirectories(WALLPAPER_FOLDER);
 
         List<Path> wallpaperFiles = Files.walk(WALLPAPER_FOLDER)
                 .filter(DesktopWallpaper::isAllowedExtension)
@@ -61,7 +54,6 @@ public class Main
         {
             AlertUtils.error("Your Wallpaper Folder is empty!", "You have to insert at least one.", " ", "Click OK to open it.");
             openWallpaperFolder();
-
             System.exit(1);
         }
 
