@@ -45,8 +45,8 @@ public class Main
         Files.createDirectories(WALLPAPER_FOLDER);
 
         List<Wallpaper> wallpapers = Files.walk(WALLPAPER_FOLDER)
-                .filter(Wallpaper::isValid)
-                .map(Wallpaper::new)
+                .filter(Wallpaper::isValidFile)
+                .map(Wallpaper::of)
                 .collect(toList());
 
         if(wallpapers.isEmpty())

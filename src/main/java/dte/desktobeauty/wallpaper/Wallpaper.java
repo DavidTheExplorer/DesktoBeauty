@@ -1,21 +1,30 @@
 package dte.desktobeauty.wallpaper;
 
+import dte.desktobeauty.utils.PictureUtils;
 import dte.desktobeauty.utils.User32;
 import dte.desktobeauty.utils.FileUtils;
 
 import java.nio.file.Path;
 
-public record Wallpaper(Path file)
+public class Wallpaper
 {
-    public Wallpaper
+    private final Path file;
+    private final double brightness;
+
+    private Wallpaper(Path file, double brightness)
     {
-        if(!isValid(file))
-            throw new IllegalArgumentException(String.format("File \"%s\" cannot be used as a wallpaper; The allowed extensions are: %s.", FileUtils.getExtension(file), formatAllowedExtensions()));
+        this.file = file;
+        this.brightness = brightness;
     }
 
-    public static boolean isValid(Path file)
+    public static Wallpaper of(Path file)
     {
-        return FileUtils.isPicture(file);
+        if(!isValidFile(file))
+            throw new IllegalArgumentException(String.format("File \"%s\" cannot be used as a wallpaper; The allowed extensions are: %s.", FileUtils.getExtension(file), formatAllowedExtensions()));
+
+        double brightness = PictureUtils.calculateLuminance(file) / 255 * 100;
+
+        return new Wallpaper(file, brightness);
     }
 
     public static void setForDesktop(Wallpaper wallpaper)
@@ -23,6 +32,32 @@ public record Wallpaper(Path file)
         String filePath = wallpaper.file.toString();
 
         User32.INSTANCE.SystemParametersInfo(0x0014, 0, filePath, 1);
+    }
+
+    public static boolean isValidFile(Path file)
+    {
+        return FileUtils.isPicture(file);
+    }
+
+    public Path getFile()
+    {
+        return this.file;
+    }
+
+    /**
+     * Returns this wallpaper's brightness as a percentage from 0 to 100.
+     * The lower the value, the darker this wallpaper is.
+     *
+     * @return This wallpaper's brightness percentage.
+     */
+    public double getBrightness()
+    {
+        return this.brightness;
+    }
+
+    public double getBrightnessDifferenceTo(Wallpaper wallpaper)
+    {
+        return Math.abs(this.brightness - wallpaper.brightness);
     }
 
     private static String formatAllowedExtensions()

@@ -1,5 +1,6 @@
 package dte.desktobeauty.wallpaper;
 
+import dte.desktobeauty.wallpaper.selector.GradualRandomSelector;
 import dte.desktobeauty.wallpaper.selector.RandomOrderSelector;
 import dte.desktobeauty.wallpaper.selector.RandomSelector;
 
@@ -24,7 +25,7 @@ public interface WallpaperSelector
 	 */
 	static WallpaperSelector fromName(String selectorName)
 	{
-		return Stream.of(new RandomSelector(), new RandomOrderSelector())
+		return Stream.of(new RandomSelector(), new RandomOrderSelector(), new GradualRandomSelector())
 				.filter(selector -> selector.getName().equalsIgnoreCase(selectorName))
 				.findFirst()
 				.orElseThrow(() -> new IllegalArgumentException(String.format("Couldn't find a wallpaper selector named '%s'!", selectorName)));
