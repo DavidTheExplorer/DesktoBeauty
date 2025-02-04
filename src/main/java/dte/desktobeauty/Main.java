@@ -19,6 +19,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.List;
+import java.util.stream.Stream;
 
 import static dte.desktobeauty.state.State.INITIALIZATION;
 import static java.util.stream.Collectors.toList;
@@ -42,12 +43,15 @@ public class Main
 
     private static List<Wallpaper> loadWallpapers() throws IOException
     {
-        Files.createDirectories(WALLPAPER_FOLDER);
+        List<Wallpaper> wallpapers;
 
-        List<Wallpaper> wallpapers = Files.walk(WALLPAPER_FOLDER)
-                .filter(Wallpaper::isValidFile)
-                .map(Wallpaper::of)
-                .collect(toList());
+        try(Stream<Path> stream = Files.walk(Files.createDirectories(WALLPAPER_FOLDER)))
+        {
+             wallpapers = stream
+                    .filter(Wallpaper::isValidFile)
+                    .map(Wallpaper::of)
+                    .collect(toList());
+        }
 
         if(wallpapers.isEmpty())
         {
