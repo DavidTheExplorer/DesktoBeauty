@@ -13,7 +13,7 @@ public enum State
 	INITIALIZATION,
 	
 	/**
-	 * When the program is changing background pictures.
+	 * When the program is changing wallpapers.
 	 */
 	RUNNING;
 	

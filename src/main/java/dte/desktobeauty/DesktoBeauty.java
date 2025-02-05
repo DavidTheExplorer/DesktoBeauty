@@ -1,101 +1,52 @@
 package dte.desktobeauty;
 
-import static dte.desktobeauty.state.State.INITIALIZATION;
 import static dte.desktobeauty.state.State.RUNNING;
-import static java.util.stream.Collectors.toList;
 
-import java.awt.AWTException;
-import java.awt.Desktop;
-import java.awt.Image;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.List;
 
-import javax.imageio.ImageIO;
-
-import com.machinezoo.noexception.Exceptions;
-import dte.desktobeauty.desktop.DesktopPicture;
-import dte.desktobeauty.exceptions.PopupExceptionHandler;
-import dte.desktobeauty.pictureselector.PictureSelector;
 import dte.desktobeauty.state.State;
-import dte.desktobeauty.utils.AlertUtils;
-import dte.desktobeauty.utils.TrayIconBuilder;
-import dte.desktobeauty.utils.TimeUtils;
+import dte.desktobeauty.wallpaper.Wallpaper;
+import dte.desktobeauty.wallpaper.WallpaperSelector;
 
 public class DesktoBeauty
 {
-	private static final Path BACKGROUNDS_FOLDER_PATH = Paths.get(System.getProperty("user.home"), "DesktoBeauty", "Desktop Backgrounds");
+	private final List<Wallpaper> wallpapers;
+	private final WallpaperSelector wallpaperSelector;
+	private final Duration delay;
 
-	public static void main(String[] args) throws Exception
+	public DesktoBeauty(List<Wallpaper> wallpapers, WallpaperSelector wallpaperSelector, Duration delay)
 	{
-		initialize();
+		this.wallpapers = wallpapers;
+		this.wallpaperSelector = wallpaperSelector;
+		this.delay = delay;
+	}
 
-		//parse the arguments
-		Duration changeDelay = TimeUtils.parseDuration(args[0]);
-		PictureSelector pictureSelector = PictureSelector.fromName(args[1]);
-		List<Path> backgroundPictures = loadBackgroundPictures();
-
+	public void start()
+	{
 		State.set(RUNNING);
 		
-		while(true) 
+		while(true)
 		{
-			DesktopPicture.set(pictureSelector.selectFrom(backgroundPictures));
-
-			//wait before setting a new picture
-			Thread.sleep(changeDelay.toMillis());
+			Wallpaper.setForDesktop(selectNextWallpaper());
+			delay();
 		}
 	}
 
-	private static void initialize() throws Exception
+	private Wallpaper selectNextWallpaper()
 	{
-		State.set(INITIALIZATION);
-		Thread.setDefaultUncaughtExceptionHandler(new PopupExceptionHandler());
-		showTrayIcon();
+		return this.wallpaperSelector.selectFrom(this.wallpapers);
 	}
 
-	private static List<Path> loadBackgroundPictures() throws IOException
+	private void delay()
 	{
-		if(Files.notExists(BACKGROUNDS_FOLDER_PATH))
+		try
 		{
-			Files.createDirectories(BACKGROUNDS_FOLDER_PATH);
-			AlertUtils.error("Successfully created your Backgrounds Folder at:", BACKGROUNDS_FOLDER_PATH.toString(), " ", "Click on OK to open it.");
-			openBackgroundsFolder();
-			
-			System.exit(0);
+			Thread.sleep(this.delay.toMillis());
 		}
-
-		List<Path> backgrounds = Files.walk(BACKGROUNDS_FOLDER_PATH)
-				.filter(DesktopPicture::isAllowedExtension)
-				.collect(toList());
-
-		if(backgrounds.isEmpty())
+		catch(Exception exception)
 		{
-			AlertUtils.error("Your Backgrounds Folder is empty!", "You have to insert at least one background.", " ", "Opening...");
-			openBackgroundsFolder();
-			
-			System.exit(1);
+			throw new RuntimeException(exception);
 		}
-		
-		return backgrounds;
-	}
-
-	private static void showTrayIcon() throws AWTException, IOException
-	{
-		Image image = ImageIO.read(DesktoBeauty.class.getResource("/System Tray.png"));
-
-		new TrayIconBuilder()
-		.withTooltip("DesktoBeauty")
-		.withImage(image)
-		.withMenuItem("Open Backgrounds Folder", unused -> openBackgroundsFolder())
-		.withMenuItem("Stop", unused -> System.exit(0))
-		.display();
-	}
-	
-	private static void openBackgroundsFolder()
-	{
-		Exceptions.sneak().run(() -> Desktop.getDesktop().open(BACKGROUNDS_FOLDER_PATH.toFile()));
 	}
 }

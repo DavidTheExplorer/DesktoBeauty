@@ -17,7 +17,7 @@ public class PopupExceptionHandler implements UncaughtExceptionHandler
 		switch(State.current()) 
 		{
 			case INITIALIZATION -> AlertUtils.error("Error during initialization:", stackTrace);
-			case RUNNING -> AlertUtils.error("Error while switching a Background Picture:", stackTrace);
+			case RUNNING -> AlertUtils.error("Error while switching wallpapers:", stackTrace);
 		}
 
 		System.exit(1);
