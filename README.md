@@ -14,6 +14,8 @@ The program takes the following CLI parameters in this order:
     - **Random**: Selects a random wallpaper.
     - **Random Order**: Selects a random wallpaper, but an already selected one cannot repeat until the rest were selected.\
     Example using numbers: `1, 3, 2 -> 1, 2, 3 -> 2, 3, 1`
+    - **Gradual Random** - Selects a random wallpaper whose brightness is moderately higher than the previous one;
+     This prevents the annoying flash when a bright picture is selected right after a dark one.
 
 ## Download
 You can get the program's jar from the latest release.\
