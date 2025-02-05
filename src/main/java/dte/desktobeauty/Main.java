@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import static dte.desktobeauty.state.State.INITIALIZATION;
-import static java.util.stream.Collectors.toList;
 
 public class Main
 {
@@ -50,7 +49,7 @@ public class Main
              wallpapers = stream
                     .filter(Wallpaper::isValidFile)
                     .map(Wallpaper::of)
-                    .collect(toList());
+                    .toList();
         }
 
         if(wallpapers.isEmpty())
@@ -65,13 +64,13 @@ public class Main
 
     private static void showTrayIcon() throws AWTException, IOException
     {
-        Image image = ImageIO.read(DesktoBeauty.class.getResource("/System Tray.png"));
+        Image image = ImageIO.read(DesktoBeauty.class.getResource("/Tray Icon.png"));
 
         new TrayIconBuilder()
                 .withTooltip("DesktoBeauty")
                 .withImage(image)
-                .withMenuItem("Open Wallpaper Folder", unused -> openWallpaperFolder())
-                .withMenuItem("Stop", unused -> System.exit(0))
+                .withMenuItem("Open Wallpaper Folder", Main::openWallpaperFolder)
+                .withMenuItem("Stop", () -> System.exit(0))
                 .display();
     }
 

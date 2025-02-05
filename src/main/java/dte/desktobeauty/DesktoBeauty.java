@@ -5,6 +5,7 @@ import static dte.desktobeauty.state.State.RUNNING;
 import java.time.Duration;
 import java.util.List;
 
+import com.machinezoo.noexception.Exceptions;
 import dte.desktobeauty.state.State;
 import dte.desktobeauty.wallpaper.Wallpaper;
 import dte.desktobeauty.wallpaper.WallpaperSelector;
@@ -13,13 +14,13 @@ public class DesktoBeauty
 {
 	private final List<Wallpaper> wallpapers;
 	private final WallpaperSelector wallpaperSelector;
-	private final Duration delay;
+	private final long delayMS;
 
 	public DesktoBeauty(List<Wallpaper> wallpapers, WallpaperSelector wallpaperSelector, Duration delay)
 	{
 		this.wallpapers = wallpapers;
 		this.wallpaperSelector = wallpaperSelector;
-		this.delay = delay;
+		this.delayMS = delay.toMillis();
 	}
 
 	public void start()
@@ -40,13 +41,6 @@ public class DesktoBeauty
 
 	private void delay()
 	{
-		try
-		{
-			Thread.sleep(this.delay.toMillis());
-		}
-		catch(Exception exception)
-		{
-			throw new RuntimeException(exception);
-		}
+		Exceptions.sneak().run(() -> Thread.sleep(this.delayMS));
 	}
 }
