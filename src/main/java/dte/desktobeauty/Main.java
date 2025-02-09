@@ -70,7 +70,7 @@ public class Main
                 .withTooltip("DesktoBeauty")
                 .withImage(image)
                 .withMenuItem("Open Wallpaper Folder", Main::openWallpaperFolder)
-                .withMenuItem("Stop", () -> System.exit(0))
+                .withMenuItem("Exit", () -> System.exit(0))
                 .display();
     }
 
