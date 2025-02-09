@@ -60,6 +60,12 @@ public class Wallpaper
         return Math.abs(this.brightness - wallpaper.brightness);
     }
 
+    @Override
+    public String toString()
+    {
+        return String.format("Wallpaper [file=%s, brightness=%s]", this.file, this.brightness);
+    }
+
     private static String formatAllowedExtensions()
     {
         return '[' + String.join(", ", FileUtils.PICTURE_EXTENSIONS) + ']';
