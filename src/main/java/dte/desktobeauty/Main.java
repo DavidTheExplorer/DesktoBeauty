@@ -8,6 +8,7 @@ import dte.desktobeauty.utils.TimeUtils;
 import dte.desktobeauty.utils.TrayIconBuilder;
 import dte.desktobeauty.wallpaper.Wallpaper;
 import dte.desktobeauty.wallpaper.WallpaperSelector;
+import dte.desktobeauty.wallpaper.selector.SortedSelector;
 
 import javax.imageio.ImageIO;
 import java.awt.AWTException;
@@ -18,11 +19,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
 import static dte.desktobeauty.state.State.INITIALIZATION;
-import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toCollection;
 
 public class Main
 {
@@ -38,6 +40,8 @@ public class Main
         WallpaperSelector wallpaperSelector = WallpaperSelector.fromName(args[1]);
         Duration changeDelay = TimeUtils.parseDuration(args[0]);
 
+        sortIfNeeded(wallpapers, wallpaperSelector);
+
         new DesktoBeauty(wallpapers, wallpaperSelector, changeDelay).start();
     }
 
@@ -50,7 +54,7 @@ public class Main
              wallpapers = stream
                     .filter(Wallpaper::isValidFile)
                     .map(Wallpaper::of)
-                    .collect(toList());
+                    .collect(toCollection(ArrayList::new)); //the list must be modifiable in case the selector is a SortedSelector
         }
 
         if(wallpapers.isEmpty())
@@ -65,18 +69,24 @@ public class Main
 
     private static void showTrayIcon() throws AWTException, IOException
     {
-        Image image = ImageIO.read(DesktoBeauty.class.getResource("/System Tray.png"));
+        Image image = ImageIO.read(DesktoBeauty.class.getResource("/Tray Icon.png"));
 
         new TrayIconBuilder()
                 .withTooltip("DesktoBeauty")
                 .withImage(image)
-                .withMenuItem("Open Wallpaper Folder", unused -> openWallpaperFolder())
-                .withMenuItem("Stop", unused -> System.exit(0))
+                .withMenuItem("Open Wallpaper Folder", Main::openWallpaperFolder)
+                .withMenuItem("Exit", () -> System.exit(0))
                 .display();
     }
 
     private static void openWallpaperFolder()
     {
         Exceptions.sneak().run(() -> Desktop.getDesktop().open(WALLPAPER_FOLDER.toFile()));
+    }
+    
+    private static void sortIfNeeded(List<Wallpaper> wallpapers, WallpaperSelector wallpaperSelector)
+    {
+        if(wallpaperSelector instanceof SortedSelector selector)
+            wallpapers.sort(selector.getComparator());
     }
 }

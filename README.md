@@ -12,6 +12,8 @@ The program takes the following CLI parameters in this order:
 
 2. Wallpaper Selection Algorithm:
     - **Random**: Selects a random wallpaper.
+    - **Numerical**: Allows you to define a selection order by naming your wallpapers with indexes. You can either use an integer, or specify the index at the end surrounded by parenthesis.\
+    Example: `"1.jpg" -> "Cute Dog (2).png" -> "Forest (3).jpg" -> "4.png"`
     - **Random Order**: Selects a random wallpaper, but an already selected one cannot repeat until the rest were selected.\
     Example using numbers: `1, 3, 2 -> 1, 2, 3 -> 2, 3, 1`
     - **Gradual Random** - Selects a random wallpaper whose brightness is moderately higher than the previous one;

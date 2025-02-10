@@ -14,8 +14,6 @@ public class TrayIconBuilder
 	private String tooltip;
 	private PopupMenu menu;
 
-	private static final SystemTray SYSTEM_TRAY = SystemTray.getSystemTray();
-
 	public TrayIconBuilder withImage(Image image)
 	{
 		this.image = image;
@@ -39,10 +37,16 @@ public class TrayIconBuilder
 		return this;
 	}
 
+	public TrayIconBuilder withMenuItem(String label, Runnable clickHandler)
+	{
+		return withMenuItem(label, event -> clickHandler.run());
+	}
+
 	public void display() throws AWTException 
 	{
 		TrayIcon icon = new TrayIcon(this.image, this.tooltip, this.menu);
 		icon.setImageAutoSize(true);
-		SYSTEM_TRAY.add(icon);
+
+		SystemTray.getSystemTray().add(icon);
 	}
 }

@@ -14,6 +14,14 @@ public class FileUtils
 		return pathString.substring(pathString.lastIndexOf('.') +1).toLowerCase();
 	}
 
+	public static String getFileNameWithoutExtension(Path path)
+	{
+		String fileName = path.getFileName().toString();
+		int extensionIndex = fileName.indexOf(getExtension(path));
+
+		return fileName.substring(0, extensionIndex -1);
+	}
+
 	public static boolean isPicture(Path path)
 	{
 		return PICTURE_EXTENSIONS.contains(getExtension(path));
