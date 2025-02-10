@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 
 public class NumericalSelector extends IndexedSelector implements SortedSelector
 {
-    private static final Pattern INDEX_PATTERN = Pattern.compile("\\((?<index>\\d+)\\)");
+    private static final Pattern INDEX_PATTERN = Pattern.compile("\\((?<index>\\d+)\\)$");
 
     public NumericalSelector()
     {
