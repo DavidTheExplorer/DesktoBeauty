@@ -4,7 +4,6 @@ import java.lang.Thread.UncaughtExceptionHandler;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
-import dte.desktobeauty.state.State;
 import dte.desktobeauty.utils.AlertUtils;
 
 public class PopupExceptionHandler implements UncaughtExceptionHandler
@@ -12,14 +11,14 @@ public class PopupExceptionHandler implements UncaughtExceptionHandler
 	@Override
 	public void uncaughtException(Thread thread, Throwable throwable)
 	{
-		String stackTrace = ExceptionUtils.getStackTrace(throwable);
-		
-		switch(State.current()) 
-		{
-			case INITIALIZATION -> AlertUtils.error("Error during initialization:", stackTrace);
-			case RUNNING -> AlertUtils.error("Error while switching wallpapers:", stackTrace);
-		}
-
+		AlertUtils.error(createErrorMessage(throwable));
 		System.exit(1);
+	}
+
+	private static String[] createErrorMessage(Throwable throwable)
+	{
+		String stackTrace = ExceptionUtils.getStackTrace(throwable);
+
+		return new String[]{"The program has encountered an error and will shutdown.", "Please report the following:", " ", stackTrace};
 	}
 }

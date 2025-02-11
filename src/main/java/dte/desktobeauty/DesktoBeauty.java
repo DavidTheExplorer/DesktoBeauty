@@ -1,12 +1,9 @@
 package dte.desktobeauty;
 
-import static dte.desktobeauty.state.State.RUNNING;
-
 import java.time.Duration;
 import java.util.List;
 
 import com.machinezoo.noexception.Exceptions;
-import dte.desktobeauty.state.State;
 import dte.desktobeauty.wallpaper.Wallpaper;
 import dte.desktobeauty.wallpaper.WallpaperSelector;
 
@@ -25,8 +22,6 @@ public class DesktoBeauty
 
 	public void start()
 	{
-		State.set(RUNNING);
-		
 		while(true)
 		{
 			Wallpaper.setForDesktop(selectNextWallpaper());

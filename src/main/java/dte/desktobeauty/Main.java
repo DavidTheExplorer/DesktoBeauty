@@ -2,7 +2,6 @@ package dte.desktobeauty;
 
 import com.machinezoo.noexception.Exceptions;
 import dte.desktobeauty.exceptions.PopupExceptionHandler;
-import dte.desktobeauty.state.State;
 import dte.desktobeauty.utils.AlertUtils;
 import dte.desktobeauty.utils.TimeUtils;
 import dte.desktobeauty.utils.TrayIconBuilder;
@@ -23,7 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static dte.desktobeauty.state.State.INITIALIZATION;
 import static java.util.stream.Collectors.toCollection;
 
 public class Main
@@ -32,10 +30,11 @@ public class Main
 
     public static void main(String[] args) throws Exception
     {
-        State.set(INITIALIZATION);
+        //initialization
         Thread.setDefaultUncaughtExceptionHandler(new PopupExceptionHandler());
         showTrayIcon();
 
+        //argument parsing
         List<Wallpaper> wallpapers = loadWallpapers();
         WallpaperSelector wallpaperSelector = WallpaperSelector.fromName(args[1]);
         Duration changeDelay = TimeUtils.parseDuration(args[0]);
